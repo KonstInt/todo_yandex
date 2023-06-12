@@ -1,0 +1,12 @@
+{
+    "helloWorld": "Привет мир!",
+    "myTasks": "Мои дела",
+    "done":"Выполнено - ",
+    "save":"Сохранить", 
+    "delete":"Удалить",
+    "lowPriority":"Низкий",
+    "highPriority":"Высокий",
+    "withoutPriority":"Нет",
+    "priority":"Важность",
+    "doneUntil":"Сделать до"
+}

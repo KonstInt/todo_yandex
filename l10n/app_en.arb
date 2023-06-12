@@ -1,0 +1,12 @@
+{
+    "helloWorld": "Hello World!",
+    "myTasks": "My tasks",
+    "done":"Done - ",
+    "save":"Save", 
+    "delete":"Delete",
+    "lowPriority":"Low",
+    "highPriority":"High",
+    "withoutPriority":"None",
+    "priority":"Priority",
+    "doneUntil":"Done until"
+}
