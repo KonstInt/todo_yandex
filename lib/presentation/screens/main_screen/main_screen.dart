@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:to_do_yandex/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
+import 'package:to_do_yandex/presentation/screens/main_screen/widgets/swipe_container.dart';
 import 'package:to_do_yandex/presentation/screens/main_screen/widgets/to_do_element.dart';
 import 'widgets/sliver_appbar_delegate.dart';
 
@@ -16,13 +19,13 @@ class _MainScreenState extends State<MainScreen> {
     Flavor(name: 'Vanilla'),
     Flavor(name: 'Lemon'),
     Flavor(name: 'Yoghurt'),
-        Flavor(name: 'Chocolate'),
+    Flavor(name: 'Chocolate'),
     Flavor(name: 'Strawberry'),
     Flavor(name: 'Hazelnut'),
     Flavor(name: 'Vanilla'),
     Flavor(name: 'Lemon'),
     Flavor(name: 'Yoghurt'),
-        Flavor(name: 'Chocolate'),
+    Flavor(name: 'Chocolate'),
     Flavor(name: 'Strawberry'),
     Flavor(name: 'Hazelnut'),
     Flavor(name: 'Vanilla'),
@@ -45,34 +48,57 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: SliverAppBarDelegate(),
-            ),
-            SliverToBoxAdapter(
-              child: Card(
-                elevation: 3,
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                child: Column(
-                  children: [
-                    ListView.builder(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: flavors.length,
-                      itemBuilder: (context, index) {
-                        final flavor = flavors[index];
-                        return Visibility(child: ToDoElement(flavor: flavor, index: index, F1: F1, F2: F2));
-                      },
-                    ),
-                  ],
+      child: BlocProvider(
+        create: (context) => TodoTasksBloc()..add(TodoTasksLoadEvent()),
+        child: Scaffold(
+          body: CustomScrollView(
+            slivers: <Widget>[
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: SliverAppBarDelegate(),
+              ),
+              SliverToBoxAdapter(
+                child: Card(
+                  elevation: 3,
+                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                  child: Column(
+                    children: [
+                      BlocBuilder<TodoTasksBloc, TodoTasksState>(
+                        builder: (context, state) {
+                          if (state is TodoTaskLoadedState) {
+                            return ListView.builder(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: state.tasks.length,
+                              itemBuilder: (context, index) {
+                                return Visibility(
+                                    child: SwipeableTodoContainer(
+                                    index: index,
+                                ));
+                              },
+                            );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            child: Icon(
+              Icons.add,
+              color: Theme.of(context).colorScheme.background,
             ),
-          ],
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
         ),
       ),
     );
@@ -81,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
 
 class Flavor {
   final String name;
-  final bool isFavorite;
+  bool isFavorite;
 
   Flavor({required this.name, this.isFavorite = false});
 

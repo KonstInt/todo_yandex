@@ -1,92 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_yandex/presentation/screens/main_screen/main_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:to_do_yandex/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
+import 'package:to_do_yandex/domain/models/todo_task.dart';
+import 'package:to_do_yandex/presentation/screens/main_screen/widgets/to_do_checkbox.dart';
+import 'package:to_do_yandex/utils/constants.dart';
 
-class ToDoElement extends StatefulWidget {
-  ToDoElement({
+class ToDoElement extends StatelessWidget {
+  const ToDoElement({
     super.key,
     required this.index,
-    required this.flavor,
-    required this.F1,
-    required this.F2,
   });
-  Flavor flavor;
-  int index;
-  Function F1;
-  Function F2;
-  @override
-  State<ToDoElement> createState() => _ToDoElementState();
-}
-
-class _ToDoElementState extends State<ToDoElement> {
-  double progress = 0.0;
+  final int index;
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      onUpdate: (details) {
-     
-        setState(() {
-          progress = details.progress;
-          
-        }); 
-      },
-      key: Key(widget.flavor.name),
-      background: Container(
-        color: Colors.green,
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.only(left: (MediaQuery.of(context).size.width)*progress-47>10?((MediaQuery.of(context).size.width)*progress-47):10),
-            child: Icon(Icons.favorite, size: 10 + progress*50 < 25 ? 10 + progress*50: 25,),
-          ),
-        ),
-      ),
-      secondaryBackground: Container(
-        color: Colors.red,
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: EdgeInsets.only(right: (MediaQuery.of(context).size.width)*progress-47>10?((MediaQuery.of(context).size.width)*progress-47):10),
-            child: Icon(Icons.delete),
-          ),
-        ),
-      ),
-      confirmDismiss: (direction) async {
-        if (direction == DismissDirection.startToEnd) {
-          ///
-          widget.F1(widget.index, widget.flavor);
-          return false;
-        } else {
-          bool delete = true;
-          final snackbarController =
-              ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              duration: Duration(seconds: 1),
-              content: Text('Deleted ${widget.flavor.name}'),
-              action: SnackBarAction(
-                  label: 'Undo', onPressed: () => delete = false),
-            ),
-          );
-          await snackbarController.closed;
-          return delete;
-        }
-      },
-      onDismissed: (_) {
-        ///
-        widget.F2(widget.index);
-      },
-      child: Container(
-        height: 50,
+    return Container(
+        color: Theme.of(context).colorScheme.onBackground,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Text(widget.flavor.name),
-            Spacer(),
-            Icon(widget.flavor.isFavorite
+            TodoCheckbox(index: index),
+            Expanded(
+              flex: 2,
+              child: Text(
+                context.read<TodoTasksBloc>().tasks[index].text,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            SizedBox(
+              width: 14,
+            ),
+            Icon(context.read<TodoTasksBloc>().tasks[index].done
                 ? Icons.favorite
                 : Icons.favorite_border),
           ]),
         ),
-      ),
-    );
+      );
   }
 }
