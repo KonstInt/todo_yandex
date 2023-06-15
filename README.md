@@ -1,16 +1,22 @@
-# to_do_yandex
+# ToDo
 
-A new Flutter project.
+Приложение для планирования задач
 
-## Getting Started
+Домашний экран задач           | Экран добавления и редактирования задачи
+:-------------------------:|:-------------------------:
+![Pic0](https://github.com/KonstInt/todo_yandex/assets/58230320/85d07f39-5d11-44b1-899d-13ce3efea82e)  | ![Pic3](https://github.com/KonstInt/todo_yandex/assets/58230320/02c46ec7-5ecd-4fcf-8e8b-228e37d43741) 
 
-This project is a starting point for a Flutter application.
+Выполнение задачи             |  Удаление задачи
+:-------------------------:|:-------------------------:
+![Pic2](https://github.com/KonstInt/todo_yandex/assets/58230320/2bb99cfc-b315-4a65-821b-e3ad3d70d294)| ![Pic1](https://github.com/KonstInt/todo_yandex/assets/58230320/67445343-cf3f-444a-a5c6-614dc1333ac5)
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## Подробнее
+
+ToDo - одно из наиболее эффективных и удобных приложений для составления и управления вашими задачами. Оно позволяет создавать персональные задачи, выполнять и удалять их путем свайпов, редактировать, а также добавлять приоритетность.
+
+Основная функциональность приложения предназначена для простоты и удобства использования. Пользователи могут быстро добавлять новые задачи, редактировать их, указывать приоритетность задач и удалять их.
+
+В целом, эффективность и функциональность приложения превосходно сочетается с её лаконичным и привлекательным дизайном, что даёт приятный и практичный результат для управления делами.
