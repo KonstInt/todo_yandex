@@ -6,8 +6,8 @@ import 'constants.dart';
 
 ThemeData lightThemeData() => ThemeData(
       colorScheme: const ColorScheme.light(
-        primary: MyColorsLight.kColorBackPrimary,
-        secondary: MyColors.kGreyColor,
+        primary: MyColorsLight.kColorBlue,
+        secondary: MyColorsLight.kColorBlue,
         shadow: MyColorsLight.kColorGrayLight,
         onBackground: MyColorsLight.kColorBackElevated,
         background: MyColorsLight.kColorBackPrimary,
@@ -65,9 +65,11 @@ ThemeData lightThemeData() => ThemeData(
         ),
 
       ),
-      
-      iconTheme: const IconThemeData(color: MyColorsLight.kLabelTertiary),
-      primaryIconTheme: const IconThemeData(
-        color: MyColors.kGreenColor,
+      textSelectionTheme:TextSelectionThemeData(
+        
+        selectionColor: MyColorsLight.kColorBlue.withOpacity(0.3),
+        selectionHandleColor: MyColorsLight.kColorBlue,
       ),
+      iconTheme: const IconThemeData(color: MyColorsLight.kLabelTertiary),
+      
     );

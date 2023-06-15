@@ -8,5 +8,8 @@
     "highPriority":"Высокий",
     "withoutPriority":"Нет",
     "priority":"Важность",
-    "doneUntil":"Сделать до"
+    "doneUntil":"Сделать до",
+    "textExample":"Надо сделать что-то",
+    "deleted":"Удалено",
+    "cancel":"Отмена"
 }

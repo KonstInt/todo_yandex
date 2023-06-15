@@ -8,7 +8,8 @@ class TodoTasksInitial extends TodoTasksState {}
 
 class TodoTaskLoadedState extends TodoTasksState{
   final List<TodoTask> tasks;
-  TodoTaskLoadedState({required this.tasks});
+  final int doneCounter;
+  TodoTaskLoadedState({required this.tasks, required this.doneCounter});
 }
 
 class TodoTaskLoadingState extends TodoTasksState{

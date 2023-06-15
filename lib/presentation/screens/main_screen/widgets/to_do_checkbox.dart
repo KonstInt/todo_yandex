@@ -4,18 +4,24 @@ import 'package:to_do_yandex/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'package:to_do_yandex/domain/models/todo_task.dart';
 import 'package:to_do_yandex/utils/constants.dart';
 
-class TodoCheckbox extends StatelessWidget {
-  final int index;
-  const TodoCheckbox({super.key, required this.index});
+class TodoCheckbox extends StatefulWidget {
+  final String id;
+  final TaskPriority priority;
+  bool done;
+  TodoCheckbox({super.key, required this.id, required this.priority, required this.done});
 
   @override
+  State<TodoCheckbox> createState() => _TodoCheckboxState();
+}
+
+class _TodoCheckboxState extends State<TodoCheckbox> {
+  @override
   Widget build(BuildContext context) {
-    TodoTask task = context.read<TodoTasksBloc>().tasks[index];
-    Color backgroundColor = switch (task.importance) {
+    Color backgroundColor = switch (widget.priority) {
       TaskPriority.important => MyColorsLight.kColorRed.withOpacity(0.16),
       _ => Colors.transparent
     };
-    Color borderColor = switch (task.importance) {
+    Color borderColor = switch (widget.priority) {
       TaskPriority.important => MyColorsLight.kColorRed,
       _ => MyColorsLight.kSeparatorColor.withOpacity(0.2)
     };
@@ -26,7 +32,7 @@ class TodoCheckbox extends StatelessWidget {
           alignment: AlignmentDirectional.center,
           children: [
             Container(
-              color: task.done
+              color: widget.done
                   ? MyColorsLight.kColorGreen
                   : backgroundColor,
               width: 15,
@@ -38,12 +44,12 @@ class TodoCheckbox extends StatelessWidget {
               overlayColor:
                   MaterialStateProperty.all(MyColorsLight.kColorGrayLight),
               fillColor: MaterialStateProperty.all(
-                  task.done ? Colors.green : borderColor),
-              value: task.done,
-              onChanged: (bool? newValue) {
+                  widget.done ? Colors.green : borderColor),
+              value: widget.done,
+              onChanged: (bool? newValue) async {
                 context
                     .read<TodoTasksBloc>()
-                    .add(TodoTasksChangeDoneEvent(index: index));
+                    .add(TodoTasksChangeDoneEvent(id: widget.id)); 
               },
             ),
           ],

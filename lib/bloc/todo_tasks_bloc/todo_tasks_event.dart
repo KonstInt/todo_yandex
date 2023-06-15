@@ -6,15 +6,16 @@ abstract class TodoTasksEvent {}
 class TodoTasksLoadEvent extends TodoTasksEvent {}
 
 class TodoTasksChangeDoneEvent extends TodoTasksEvent {
-  final int index;
-  TodoTasksChangeDoneEvent({required this.index});
+  final String id;
+  TodoTasksChangeDoneEvent({required this.id});
 }
 
+class TodoTasksChangeDoneVisibilityEvent extends TodoTasksEvent{}
 class TodoTasksAddEvent extends TodoTasksEvent {
   final TodoTask task;
   TodoTasksAddEvent({required this.task});
 }
 class TodoTasksRemoveEvent extends TodoTasksEvent {
-  final int index;
-  TodoTasksRemoveEvent({required this.index});
+  final String id;
+  TodoTasksRemoveEvent({required this.id});
 }

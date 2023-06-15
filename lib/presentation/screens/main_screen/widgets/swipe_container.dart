@@ -6,10 +6,13 @@ import 'package:to_do_yandex/presentation/screens/main_screen/widgets/to_do_elem
 class SwipeableTodoContainer extends StatefulWidget {
   const SwipeableTodoContainer({
     super.key,
-    required this.index,
+    required this.id,
+    required this.child,
+    required this.done,
   });
-
-  final int index;
+  final Widget child;
+  final String id;
+  final bool done;
   @override
   State<SwipeableTodoContainer> createState() => _SwipeableTodoContainerState();
 }
@@ -19,14 +22,16 @@ class _SwipeableTodoContainerState extends State<SwipeableTodoContainer> {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
+      movementDuration: Duration(milliseconds: 80),
+      //resizeDuration: Duration(seconds: 10),
       onUpdate: (details) {
         setState(() {
           progress = details.progress;
         });
       },
-      key: Key(context.read<TodoTasksBloc>().tasks[widget.index].id),
+      key: Key(widget.id),
       background: Container(
-        color: Colors.green,
+        color: !widget.done ? Colors.green : Colors.yellow.withOpacity(1-progress),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Padding(
@@ -35,7 +40,7 @@ class _SwipeableTodoContainerState extends State<SwipeableTodoContainer> {
                     ? ((MediaQuery.of(context).size.width) * progress - 47)
                     : 10),
             child: Icon(
-              Icons.favorite,
+              !widget.done ? Icons.favorite : Icons.refresh,
               size: 20 + progress * 37 < 35 ? 20 + progress * 37 : 30,
             ),
           ),
@@ -62,8 +67,8 @@ class _SwipeableTodoContainerState extends State<SwipeableTodoContainer> {
           ///
           context
               .read<TodoTasksBloc>()
-              .add(TodoTasksChangeDoneEvent(index: widget.index));
-          return false;
+              .add(TodoTasksChangeDoneEvent(id: widget.id));
+          return  false;
         } else {
           bool delete = true;
           final snackbarController = ScaffoldMessenger.of(context).showSnackBar(
@@ -82,9 +87,9 @@ class _SwipeableTodoContainerState extends State<SwipeableTodoContainer> {
         ///
         context
             .read<TodoTasksBloc>()
-            .add(TodoTasksRemoveEvent(index: widget.index));
+            .add(TodoTasksRemoveEvent(id: widget.id));
       },
-      child: ToDoElement(index: widget.index),
+      child: widget.child,
     );
   }
 }

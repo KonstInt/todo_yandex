@@ -8,5 +8,8 @@
     "highPriority":"High",
     "withoutPriority":"None",
     "priority":"Priority",
-    "doneUntil":"Done until"
+    "doneUntil":"Done until",
+    "textExample":"Todo something...",
+    "deleted":"Deleted",
+    "cancel":"Cancel"
 }

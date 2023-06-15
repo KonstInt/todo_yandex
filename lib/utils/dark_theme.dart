@@ -5,75 +5,71 @@ import 'package:google_fonts/google_fonts.dart';
 import 'constants.dart';
 
 ThemeData basicThemeData() => ThemeData(
-    colorScheme: const ColorScheme.light(
-      primary: MyColors.kGreenColor,
-      secondary: MyColors.kGreyColor,
-      shadow: MyColors.kShadowGreyColor,
-      onBackground: MyColors.kWhiteColor,
-      background: MyColors.kGreyBackground,
-    ),
-    brightness: Brightness.light,
-    appBarTheme: const AppBarTheme(
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: MyColors.kWhiteColor,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
+      colorScheme: const ColorScheme.dark(
+        primary: MyColorsLight.kColorBlue,
+        secondary: MyColorsLight.kColorBlue,
+        shadow: MyColorsLight.kColorGrayLight,
+        onBackground: MyColorsLight.kColorBackElevated,
+        background: MyColorsLight.kColorBackPrimary,
       ),
-    ),
-    primaryColor: MyColors.kGreenColor,
-    textTheme: TextTheme(
-      titleLarge: GoogleFonts.yesevaOne(
-        textStyle: TextStyle(
-          color: MyColors.kBlackColor,
-          fontWeight: FontWeight.w400,
-          fontSize: 24,
+      brightness: Brightness.dark,
+      appBarTheme: const AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: MyColorsLight.kColorBackPrimary,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
         ),
       ),
-      titleMedium: GoogleFonts.jost(
-        textStyle: TextStyle(
-          color: MyColors.kBlackColor,
-          fontWeight: FontWeight.w500,
-          fontSize: 14,
-        ),
-      ),
-      bodyMedium: GoogleFonts.jost(
-        textStyle: TextStyle(
-          color: MyColors.kBlackColor,
-          fontWeight: FontWeight.w400,
-          fontSize: 12,
-        ),
-      ),
-    ),
-    iconTheme: const IconThemeData(color: MyColors.kLightGreyColor),
-    primaryIconTheme: const IconThemeData(
-      color: MyColors.kGreenColor,
-    ),
-    textButtonTheme: TextButtonThemeData(
-      style: ButtonStyle(
-        overlayColor:
-            MaterialStateProperty.all(const Color.fromARGB(60, 255, 255, 255)),
-        animationDuration: const Duration(milliseconds: 10),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(68),
+      scaffoldBackgroundColor: MyColorsLight.kColorBackPrimary,
+      primaryColor: MyColorsLight.kColorBlue,
+      textTheme: TextTheme(
+        titleLarge: GoogleFonts.roboto(
+          textStyle: const TextStyle(
+            color: MyColorsLight.kLabelPrimary,
+            fontWeight: FontWeight.w500,
+            fontSize: 32,
+            height: 38/32,
           ),
         ),
-        backgroundColor: MaterialStateProperty.all(
-          MyColors.kGreenColor,
-        ),
-        foregroundColor: MaterialStateProperty.all(MyColors.kWhiteColor),
-      ),
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(68),
+        titleMedium: GoogleFonts.roboto(
+          textStyle: const TextStyle(
+            color: MyColorsLight.kLabelPrimary,
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
+            height: 32/20,
           ),
         ),
-        backgroundColor: MaterialStateProperty.all(
-          MyColors.kGreenColor,
+        bodyMedium: GoogleFonts.roboto(
+          textStyle: const TextStyle(
+            color: MyColorsLight.kLabelPrimary,
+            fontWeight: FontWeight.w400,
+            fontSize: 16,
+            height: 20/16,
+          ),
         ),
-        foregroundColor: MaterialStateProperty.all(MyColors.kWhiteColor),
+        bodySmall: GoogleFonts.roboto(
+          textStyle:const TextStyle(
+            color: MyColorsLight.kLabelPrimary,
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+            height: 20/14,
+          ),
+        ),
+        labelLarge: GoogleFonts.roboto(
+          textStyle: const TextStyle(
+            color: MyColorsLight.kLabelPrimary,
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+            height: 24/14,
+          ),
+        ),
+
       ),
-    ));
+      textSelectionTheme:TextSelectionThemeData(
+        
+        selectionColor: MyColorsLight.kColorBlue.withOpacity(0.3),
+        selectionHandleColor: MyColorsLight.kColorBlue,
+      ),
+      iconTheme: const IconThemeData(color: MyColorsLight.kLabelTertiary),
+      
+    );

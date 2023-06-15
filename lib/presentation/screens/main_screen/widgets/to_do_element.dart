@@ -8,9 +8,9 @@ import 'package:to_do_yandex/utils/constants.dart';
 class ToDoElement extends StatelessWidget {
   const ToDoElement({
     super.key,
-    required this.index,
+    required this.task,
   });
-  final int index;
+  final TodoTask task;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,11 +18,11 @@ class ToDoElement extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            TodoCheckbox(index: index),
+            TodoCheckbox(id: task.id, priority: task.importance, done: task.done,),
             Expanded(
               flex: 2,
               child: Text(
-                context.read<TodoTasksBloc>().tasks[index].text,
+                task.text,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -30,7 +30,7 @@ class ToDoElement extends StatelessWidget {
             SizedBox(
               width: 14,
             ),
-            Icon(context.read<TodoTasksBloc>().tasks[index].done
+            Icon(task.done
                 ? Icons.favorite
                 : Icons.favorite_border),
           ]),
