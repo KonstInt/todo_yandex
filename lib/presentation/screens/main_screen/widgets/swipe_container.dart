@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:to_do_yandex/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'package:to_do_yandex/presentation/screens/main_screen/widgets/to_do_element.dart';
+import 'package:to_do_yandex/utils/constants.dart';
 
 class SwipeableTodoContainer extends StatefulWidget {
   const SwipeableTodoContainer({
@@ -39,9 +41,10 @@ class _SwipeableTodoContainerState extends State<SwipeableTodoContainer> {
                 left: (MediaQuery.of(context).size.width) * progress - 47 > 10
                     ? ((MediaQuery.of(context).size.width) * progress - 47)
                     : 10),
-            child: Icon(
-              !widget.done ? Icons.favorite : Icons.refresh,
-              size: 20 + progress * 37 < 35 ? 20 + progress * 37 : 30,
+            child:SvgPicture.asset(
+              widget.done ?  MyAssets.kDoneIcon: MyAssets.kDoneIcon,
+              width: 15 + progress * 25 < 25 ? 15 + progress * 37 : 20,
+              height: 15 + progress * 25 < 25 ? 15 + progress * 37 : 20,
             ),
           ),
         ),
@@ -55,9 +58,10 @@ class _SwipeableTodoContainerState extends State<SwipeableTodoContainer> {
                 right: (MediaQuery.of(context).size.width) * progress - 47 > 10
                     ? ((MediaQuery.of(context).size.width) * progress - 47)
                     : 10),
-            child: Icon(
-              Icons.delete,
-              size: 20 + progress * 37 < 35 ? 20 + progress * 37 : 30,
+            child: SvgPicture.asset(
+              MyAssets.kRubbishIcon,
+              width: 15 + progress * 25 < 25 ? 15 + progress * 37 : 20,
+              height: 15 + progress * 25 < 25 ? 15 + progress * 37 : 20,
             ),
           ),
         ),

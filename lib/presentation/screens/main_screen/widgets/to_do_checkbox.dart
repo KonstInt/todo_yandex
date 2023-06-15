@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:to_do_yandex/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'package:to_do_yandex/domain/models/todo_task.dart';
 import 'package:to_do_yandex/utils/constants.dart';
@@ -54,7 +55,12 @@ class _TodoCheckboxState extends State<TodoCheckbox> {
             ),
           ],
         ),
-        Icon(Icons.abc_outlined),
+        if(!widget.done)
+        switch(widget.priority){
+          TaskPriority.low => Padding(padding: EdgeInsets.only(right: 6), child: SvgPicture.asset(MyAssets.kLowPriorityIcon)),
+          TaskPriority.important => Padding(padding: EdgeInsets.only(right: 6), child:SvgPicture.asset(MyAssets.kHighPriorityIcon)),
+          _=>SizedBox()},
+          
       ],
     );
   }

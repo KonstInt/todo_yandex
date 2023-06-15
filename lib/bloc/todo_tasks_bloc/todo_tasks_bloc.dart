@@ -19,6 +19,7 @@ class TodoTasksBloc extends Bloc<TodoTasksEvent, TodoTasksState> {
     on<TodoTasksAddEvent>(_onTodoTasksAddEvent);
     on<TodoTasksChangeDoneVisibilityEvent>(
         _onTodoTasksChangeDoneVisibilityEvent);
+    on<TodoTasksChangeTaskEvent>(_onTodoTasksChangeTaskEvent);
   }
 
   FutureOr<void> _onTasksLoadEvent(
@@ -72,6 +73,14 @@ class TodoTasksBloc extends Bloc<TodoTasksEvent, TodoTasksState> {
     isComplitedHide = !isComplitedHide;
     _filterFunction();
     emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
+  }
+
+  FutureOr<void> _onTodoTasksChangeTaskEvent(TodoTasksChangeTaskEvent event, Emitter<TodoTasksState> emit) {
+     emit(TodoTaskLoadingState());
+     int i = tasks.indexWhere((element) => element.id == event.id);
+     tasks[i] = event.task;
+     _filterFunction();
+     emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
   }
 }
 

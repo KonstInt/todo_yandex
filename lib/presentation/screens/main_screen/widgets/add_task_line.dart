@@ -33,7 +33,7 @@ class _AddTaskLineState extends State<AddTaskLine> {
       child: Row(
         children: [
           IconButton(
-            disabledColor: Colors.amber,
+            disabledColor: Theme.of(context).colorScheme.shadow,
             onPressed: !iconEnabled
                 ? null
                 : () {
@@ -50,8 +50,8 @@ class _AddTaskLineState extends State<AddTaskLine> {
                           ),
                         );
                     _controller.clear();
+                    iconEnabled = false;
                     FocusScopeNode currentFocus = FocusScope.of(context);
-
                     if (!currentFocus.hasPrimaryFocus) {
                       currentFocus.unfocus();
                     }

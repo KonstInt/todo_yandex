@@ -8,8 +8,8 @@ class TodoTasksLoadEvent extends TodoTasksEvent {}
 class TodoTasksChangeDoneEvent extends TodoTasksEvent {
   final String id;
   TodoTasksChangeDoneEvent({required this.id});
+  
 }
-
 class TodoTasksChangeDoneVisibilityEvent extends TodoTasksEvent{}
 class TodoTasksAddEvent extends TodoTasksEvent {
   final TodoTask task;
@@ -18,4 +18,9 @@ class TodoTasksAddEvent extends TodoTasksEvent {
 class TodoTasksRemoveEvent extends TodoTasksEvent {
   final String id;
   TodoTasksRemoveEvent({required this.id});
+}
+class TodoTasksChangeTaskEvent extends TodoTasksEvent {
+  final String id;
+  final TodoTask task;
+  TodoTasksChangeTaskEvent({required this.id, required this.task});
 }

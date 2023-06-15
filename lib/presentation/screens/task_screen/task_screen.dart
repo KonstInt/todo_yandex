@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:to_do_yandex/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'package:to_do_yandex/domain/models/todo_task.dart';
 import 'package:to_do_yandex/utils/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskScreen extends StatefulWidget {
-  const TaskScreen({super.key});
-
+  const TaskScreen({super.key, this.task});
+  final TodoTask? task;
   @override
   State<TaskScreen> createState() => _TaskScreenState();
 }
@@ -25,7 +28,14 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   void initState() {
     super.initState();
+
     _controller = TextEditingController();
+    if (widget.task != null) {
+      dateOn = widget.task!.deadline != null ? true : false;
+      _controller.text = widget.task!.text;
+      dateTime = widget.task!.deadline ?? DateTime.now();
+      dropdownValue = widget.task!.importance;
+    }
   }
 
   @override
@@ -54,10 +64,48 @@ class _TaskScreenState extends State<TaskScreen> {
                   padding: const EdgeInsets.only(left: 16, right: 16, top: 20),
                   child: Row(
                     children: [
-                      Icon(Icons.close),
+                      IconButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: Icon(Icons.close)),
                       Spacer(),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          if (_controller.text.isNotEmpty) {
+                            if (widget.task == null) {
+                              context.read<TodoTasksBloc>().add(
+                                    TodoTasksAddEvent(
+                                      task: TodoTask(
+                                          id: UniqueKey().toString(),
+                                          text: _controller.text,
+                                          importance: dropdownValue ??
+                                              TaskPriority.basic,
+                                          done: false,
+                                          deadline: dateOn ? dateTime : null,
+                                          createdAt: DateTime.now(),
+                                          changedAt: DateTime.now(),
+                                          lastUpdatedBy: "22222332332"),
+                                    ),
+                                  );
+                            } else {
+                              context.read<TodoTasksBloc>().add(
+                                    TodoTasksChangeTaskEvent(
+                                      id: widget.task!.id,
+                                      task: TodoTask(
+                                          id: widget.task!.id,
+                                          text: _controller.text,
+                                          importance: dropdownValue ??
+                                              TaskPriority.basic,
+                                          done: widget.task!.done,
+                                          deadline: dateOn ? dateTime : null,
+                                          createdAt: widget.task!.createdAt,
+                                          changedAt: DateTime.now(),
+                                          lastUpdatedBy: "22222332332"),
+                                    ),
+                                  );
+                            }
+                            Navigator.of(context).pop();
+                          }
+                        },
                         child: Text(
                           AppLocalizations.of(context)!.save,
                           style: Theme.of(context)
@@ -109,7 +157,6 @@ class _TaskScreenState extends State<TaskScreen> {
                   padding: const EdgeInsets.only(
                       right: 16.0, left: 16.0, top: 6, bottom: 10),
                   child: DropdownButton<TaskPriority>(
-                    //alignment: AlignmentDirectional.center,
                     isDense: true,
                     value: dropdownValue,
                     elevation: 16,
@@ -140,7 +187,7 @@ class _TaskScreenState extends State<TaskScreen> {
                           TaskPriority.important => Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Icon(Icons.remove_red_eye),
+                                SvgPicture.asset(MyAssets.kHighPriorityIcon),
                                 SizedBox(
                                   width: 6,
                                 ),
@@ -161,7 +208,8 @@ class _TaskScreenState extends State<TaskScreen> {
                   endIndent: 16,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   child: Row(
                     children: [
                       Column(
@@ -173,47 +221,87 @@ class _TaskScreenState extends State<TaskScreen> {
                           ),
                           if (dateOn)
                             Text(DateFormat('dd.MM.yyyy').format(dateTime),
-                                style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).primaryColor))
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                        color: Theme.of(context).primaryColor))
                         ],
                       ),
                       Spacer(),
                       Switch(
-                          value: dateOn,
-                          onChanged: (bool value) async {
-                            if (!value) {
-                              setState(() {
+                        activeColor: Theme.of(context).primaryColor,
+                        value: dateOn,
+                        onChanged: (bool value) async {
+                          if (!value) {
+                            setState(() {
+                              dateOn = !dateOn;
+                            });
+                          } else {
+                            final date = await pickDate();
+                            if (date == null) return; // pressed 'CANCEL'
+                            final newDateTime = DateTime(
+                              date.year,
+                              date.month,
+                              date.day,
+                              dateTime.hour,
+                              dateTime.minute,
+                            ); // DateT
+                            setState(
+                              () {
                                 dateOn = !dateOn;
-                              });
-                            } else {
-                              final date = await pickDate();
-                              if (date == null) return; // pressed 'CANCEL'
-                              final newDateTime = DateTime(
-                                date.year,
-                                date.month,
-                                date.day,
-                                dateTime.hour,
-                                dateTime.minute,
-                              ); // DateT
-                              setState(
-                                () {
-                                  dateOn = !dateOn;
-                                  dateTime = newDateTime;
-                                },
-                              );
-                            }
-                          },
-                          ),
+                                dateTime = newDateTime;
+                              },
+                            );
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ),
-                SizedBox(height: 25,),
-                Divider(thickness: 1,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 22),
-                  child: Row(children: [
-                    Icon(Icons.delete),
-                    Text(AppLocalizations.of(context)!.delete, style: Theme.of(context).textTheme.bodyMedium,)
-                  ],),
+                SizedBox(
+                  height: 25,
+                ),
+                Divider(
+                  thickness: 1,
+                ),
+                InkWell(
+                  onTap: widget.task == null
+                      ? null
+                      : () {
+                          context
+                              .read<TodoTasksBloc>()
+                              .add(TodoTasksRemoveEvent(id: widget.task!.id));
+                          Navigator.of(context).pop();
+                        },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 22),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          MyAssets.kRubbishIcon,
+                          color: widget.task != null
+                              ? MyColorsLight.kColorRed
+                              : Theme.of(context).colorScheme.secondary,
+                        ),
+                        SizedBox(
+                          width: 14,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!.delete,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                color: widget.task != null
+                                    ? MyColorsLight.kColorRed
+                                    : Theme.of(context).colorScheme.secondary,
+                              ),
+                        )
+                      ],
+                    ),
+                  ),
                 )
               ],
             ),

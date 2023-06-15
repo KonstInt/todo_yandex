@@ -2,7 +2,7 @@
     "helloWorld": "Привет мир!",
     "myTasks": "Мои дела",
     "done":"Выполнено - ",
-    "save":"Сохранить", 
+    "save":"СОХРАНИТЬ", 
     "delete":"Удалить",
     "lowPriority":"Низкий",
     "highPriority":"Высокий",

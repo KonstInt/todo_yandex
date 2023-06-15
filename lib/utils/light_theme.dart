@@ -7,7 +7,7 @@ import 'constants.dart';
 ThemeData lightThemeData() => ThemeData(
       colorScheme: const ColorScheme.light(
         primary: MyColorsLight.kColorBlue,
-        secondary: MyColorsLight.kColorBlue,
+        secondary: MyColorsLight.kColorGray,
         shadow: MyColorsLight.kColorGrayLight,
         onBackground: MyColorsLight.kColorBackElevated,
         background: MyColorsLight.kColorBackPrimary,
