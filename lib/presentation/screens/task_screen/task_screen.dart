@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:to_do_yandex/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
-import 'package:to_do_yandex/domain/models/todo_task.dart';
-import 'package:to_do_yandex/utils/constants.dart';
+import 'package:to_do_yandex/presentation/screens/task_screen/widgets/custom_appbar.dart';
+import 'package:to_do_yandex/presentation/screens/task_screen/widgets/custom_task_screen_drop_menu.dart';
+import 'package:to_do_yandex/presentation/screens/task_screen/widgets/delete_line.dart';
+import '../../../domain/models/todo_task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskScreen extends StatefulWidget {
@@ -14,11 +13,7 @@ class TaskScreen extends StatefulWidget {
   State<TaskScreen> createState() => _TaskScreenState();
 }
 
-const List<TaskPriority> list = <TaskPriority>[
-  TaskPriority.basic,
-  TaskPriority.low,
-  TaskPriority.important
-];
+
 
 class _TaskScreenState extends State<TaskScreen> {
   late TextEditingController _controller;
@@ -44,6 +39,9 @@ class _TaskScreenState extends State<TaskScreen> {
     super.dispose();
   }
 
+  void callbackDDValue(TaskPriority value){setState(() {
+                        dropdownValue = value;
+                      });}
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -60,65 +58,9 @@ class _TaskScreenState extends State<TaskScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 20),
-                  child: Row(
-                    children: [
-                      IconButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          icon: Icon(Icons.close)),
-                      Spacer(),
-                      InkWell(
-                        onTap: () {
-                          if (_controller.text.isNotEmpty) {
-                            if (widget.task == null) {
-                              context.read<TodoTasksBloc>().add(
-                                    TodoTasksAddEvent(
-                                      task: TodoTask(
-                                          id: UniqueKey().toString(),
-                                          text: _controller.text,
-                                          importance: dropdownValue ??
-                                              TaskPriority.basic,
-                                          done: false,
-                                          deadline: dateOn ? dateTime : null,
-                                          createdAt: DateTime.now(),
-                                          changedAt: DateTime.now(),
-                                          lastUpdatedBy: "22222332332"),
-                                    ),
-                                  );
-                            } else {
-                              context.read<TodoTasksBloc>().add(
-                                    TodoTasksChangeTaskEvent(
-                                      id: widget.task!.id,
-                                      task: TodoTask(
-                                          id: widget.task!.id,
-                                          text: _controller.text,
-                                          importance: dropdownValue ??
-                                              TaskPriority.basic,
-                                          done: widget.task!.done,
-                                          deadline: dateOn ? dateTime : null,
-                                          createdAt: widget.task!.createdAt,
-                                          changedAt: DateTime.now(),
-                                          lastUpdatedBy: "22222332332"),
-                                    ),
-                                  );
-                            }
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!.save,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge!
-                              .copyWith(color: MyColorsLight.kColorBlue),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                CustomTaskScreenAppBar(controller: _controller, dateOn: dateOn, dateTime: dateTime, dropdownValue: dropdownValue, task: widget.task,),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 26),
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   constraints: const BoxConstraints(minHeight: 144),
                   decoration: BoxDecoration(
@@ -156,53 +98,10 @@ class _TaskScreenState extends State<TaskScreen> {
                 Padding(
                   padding: const EdgeInsets.only(
                       right: 16.0, left: 16.0, top: 6, bottom: 10),
-                  child: DropdownButton<TaskPriority>(
-                    isDense: true,
-                    value: dropdownValue,
-                    elevation: 16,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    hint: Text(AppLocalizations.of(context)!.withoutPriority,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Theme.of(context).colorScheme.shadow)),
-                    onChanged: (TaskPriority? value) {
-                      setState(() {
-                        dropdownValue = value!;
-                      });
-                    },
-                    icon: SizedBox(),
-                    iconSize: 0,
-                    underline: SizedBox(),
-                    items: list.map<DropdownMenuItem<TaskPriority>>(
-                        (TaskPriority value) {
-                      return DropdownMenuItem<TaskPriority>(
-                        value: value,
-                        child: switch (value) {
-                          TaskPriority.basic => Text(
-                              AppLocalizations.of(context)!.withoutPriority,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          TaskPriority.low => Text(
-                              AppLocalizations.of(context)!.lowPriority,
-                              style: Theme.of(context).textTheme.bodyMedium),
-                          TaskPriority.important => Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(MyAssets.kHighPriorityIcon),
-                                SizedBox(
-                                  width: 6,
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!.highPriority,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                )
-                              ],
-                            ),
-                        },
-                      );
-                    }).toList(),
-                  ),
+                  child: 
+                  CustomTaskScreenDropMenu(dropdownValue: dropdownValue, callbackValue: callbackDDValue)
                 ),
-                Divider(
+                const Divider(
                   thickness: 1,
                   indent: 16,
                   endIndent: 16,
@@ -228,7 +127,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                         color: Theme.of(context).primaryColor))
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Switch(
                         activeColor: Theme.of(context).primaryColor,
                         value: dateOn,
@@ -259,50 +158,13 @@ class _TaskScreenState extends State<TaskScreen> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
-                Divider(
+                const Divider(
                   thickness: 1,
                 ),
-                InkWell(
-                  onTap: widget.task == null
-                      ? null
-                      : () {
-                          context
-                              .read<TodoTasksBloc>()
-                              .add(TodoTasksRemoveEvent(id: widget.task!.id));
-                          Navigator.of(context).pop();
-                        },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 22),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          MyAssets.kRubbishIcon,
-                          color: widget.task != null
-                              ? MyColorsLight.kColorRed
-                              : Theme.of(context).colorScheme.secondary,
-                        ),
-                        SizedBox(
-                          width: 14,
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!.delete,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                color: widget.task != null
-                                    ? MyColorsLight.kColorRed
-                                    : Theme.of(context).colorScheme.secondary,
-                              ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
+                DeleteLine(task: widget.task,)
               ],
             ),
           ),

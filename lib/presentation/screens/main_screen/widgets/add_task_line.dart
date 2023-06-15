@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:to_do_yandex/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
-import 'package:to_do_yandex/domain/models/todo_task.dart';
+import '../../../../bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
+import '../../../../domain/models/todo_task.dart';
 
 class AddTaskLine extends StatefulWidget {
   const AddTaskLine({super.key});
@@ -56,9 +56,9 @@ class _AddTaskLineState extends State<AddTaskLine> {
                       currentFocus.unfocus();
                     }
                   },
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
           ),
-          SizedBox(
+          const SizedBox(
             width: 17,
           ),
           Expanded(
@@ -74,7 +74,7 @@ class _AddTaskLineState extends State<AddTaskLine> {
               maxLines: null,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: AppLocalizations.of(context)!.textExample,
+                hintText: AppLocalizations.of(context)!.newTask,
                 hintStyle: Theme.of(context)
                     .textTheme
                     .bodyMedium!

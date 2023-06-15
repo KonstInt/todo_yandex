@@ -11,5 +11,6 @@
     "doneUntil":"Done until",
     "textExample":"Todo something...",
     "deleted":"Deleted",
-    "cancel":"Cancel"
+    "cancel":"Cancel",
+    "newTask":"New"
 }

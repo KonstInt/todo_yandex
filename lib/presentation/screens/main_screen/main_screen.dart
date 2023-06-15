@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:to_do_yandex/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
-import 'package:to_do_yandex/domain/models/todo_task.dart';
-import 'package:to_do_yandex/presentation/screens/main_screen/widgets/add_task_line.dart';
-import 'package:to_do_yandex/presentation/screens/main_screen/widgets/swipe_container.dart';
-import 'package:to_do_yandex/presentation/screens/main_screen/widgets/to_do_element.dart';
-import 'package:to_do_yandex/presentation/screens/task_screen/task_screen.dart';
+import '../../../bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
+import 'widgets/add_task_line.dart';
+import 'widgets/swipe_container.dart';
+import 'widgets/to_do_element.dart';
+import '../task_screen/task_screen.dart';
 import 'widgets/sliver_appbar_delegate.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -37,16 +35,17 @@ class _MainScreenState extends State<MainScreen> {
               SliverToBoxAdapter(
                 child: Card(
                   elevation: 3,
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                   child: Column(
                     children: [
                       BlocBuilder<TodoTasksBloc, TodoTasksState>(
                         builder: (context, state) {
                           if (state is TodoTaskLoadedState) {
                             return ListView.builder(
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: state.tasks.length,
                               itemBuilder: (context, index) {
                                 return Visibility(
@@ -80,11 +79,11 @@ class _MainScreenState extends State<MainScreen> {
               MaterialPageRoute(builder: (context) => const TaskScreen()),
             );
           },
+          backgroundColor: Theme.of(context).primaryColor,
           child: Icon(
             Icons.add,
             color: Theme.of(context).colorScheme.background,
           ),
-          backgroundColor: Theme.of(context).primaryColor,
         ),
       ),
     );

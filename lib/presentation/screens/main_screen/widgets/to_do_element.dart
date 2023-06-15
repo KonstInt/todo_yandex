@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:to_do_yandex/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
-import 'package:to_do_yandex/domain/models/todo_task.dart';
-import 'package:to_do_yandex/presentation/screens/main_screen/widgets/to_do_checkbox.dart';
-import 'package:to_do_yandex/presentation/screens/task_screen/task_screen.dart';
-import 'package:to_do_yandex/utils/constants.dart';
+import '../../../../domain/models/todo_task.dart';
+import 'to_do_checkbox.dart';
+import '../../task_screen/task_screen.dart';
+import '../../../../utils/constants.dart';
 
 class ToDoElement extends StatelessWidget {
   const ToDoElement({
@@ -52,36 +50,34 @@ class ToDoElement extends StatelessWidget {
                   if (task.deadline != null)
                     Text(
                       DateFormat('dd.MM.yyyy').format(task.deadline!),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondary),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Theme.of(context).colorScheme.secondary),
                     )
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 14,
             ),
-            SizedBox(
-              height: 19,
-              child: IconButton(
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  color: Colors.transparent,
-                  padding: EdgeInsets.all(0),
-                  onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => TaskScreen(
-                                  task: task,
-                                )),
-                      ),
-                  icon: SvgPicture.asset(MyAssets.kInfoOutlinedIcon)),
+            Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: SizedBox(
+                height: 19,
+                child: IconButton(
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    color: Colors.transparent,
+                    padding: const EdgeInsets.all(0),
+                    onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => TaskScreen(
+                                    task: task,
+                                  )),
+                        ),
+                    icon: SvgPicture.asset(MyAssets.kInfoOutlinedIcon)),
+              ),
             ),
           ],
         ),

@@ -11,5 +11,6 @@
     "doneUntil":"Сделать до",
     "textExample":"Надо сделать что-то",
     "deleted":"Удалено",
-    "cancel":"Отмена"
+    "cancel":"Отмена",
+    "newTask":"Новое"
 }
