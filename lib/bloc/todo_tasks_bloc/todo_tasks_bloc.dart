@@ -103,14 +103,15 @@ class TodoTasksBloc extends Bloc<TodoTasksEvent, TodoTasksState> {
 }
 
 List<TodoTask> todoTasks = [
-  /*TodoTask(
+  TodoTask(
       id: UniqueKey().toString(),
-      text: "Я знаю что проверка это скучно, поэтому вот несколько интересных фактов",
+      text: "Если что, вот мой тг для связи: @username_r00t 😉",
       importance: TaskPriority.important,
-      done: false,
+      done: true,
       createdAt: DateTime.now(),
       changedAt: DateTime.now(),
-      lastUpdatedBy: "232323233"),*/
+      deadline: DateTime.now(),
+      lastUpdatedBy: "232323233"),
   TodoTask(
       id: UniqueKey().toString(),
       text: "Самая крупная жемчужина в мире достигает 6 килограммов в весе.",
@@ -142,13 +143,15 @@ List<TodoTask> todoTasks = [
       done: true,
       createdAt: DateTime.now(),
       changedAt: DateTime.now(),
-      lastUpdatedBy: "232323233"),
-  /*TodoTask(
+      lastUpdatedBy: "232323233",
+      deadline: DateTime.now()),
+    TodoTask(
       id: UniqueKey().toString(),
-      text: "Если что, вот мой тг для связи: @username_r00t 😉",
+      text: "Я знаю что проверка это скучно, поэтому вот несколько интересных фактов",
       importance: TaskPriority.important,
-      done: true,
+      done: false,
       createdAt: DateTime.now(),
       changedAt: DateTime.now(),
-      lastUpdatedBy: "232323233")*/
+      lastUpdatedBy: "232323233"),
+  
 ];
