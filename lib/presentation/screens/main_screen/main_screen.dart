@@ -33,40 +33,44 @@ class _MainScreenState extends State<MainScreen> {
                 delegate: SliverAppBarDelegate(),
               ),
               SliverToBoxAdapter(
-                child: Card(
-                  elevation: 3,
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                  child: Column(
-                    children: [
-                      BlocBuilder<TodoTasksBloc, TodoTasksState>(
-                        builder: (context, state) {
-                          if (state is TodoTaskLoadedState) {
-                            return ListView.builder(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: state.tasks.length,
-                              itemBuilder: (context, index) {
-                                return Visibility(
-                                    child: SwipeableTodoContainer(
-                                  done: state.tasks[index].done,
-                                  id: state.tasks[index].id,
-                                  child: ToDoElement(
+                child: Padding(
+                  padding:const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Card(
+                      elevation: 3,
+                      margin:const EdgeInsets.all(0),
+                      child: Column(
+                        children: [
+                          BlocBuilder<TodoTasksBloc, TodoTasksState>(
+                            builder: (context, state) {
+                              if (state is TodoTaskLoadedState) {
+                                return ListView.builder(
+                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: state.tasks.length,
+                                  itemBuilder: (context, index) {
+                                    return SwipeableTodoContainer(
+                                      done: state.tasks[index].done,
+                                      id: state.tasks[index].id,
+                                      child: ToDoElement(
                                     task: state.tasks[index],
-                                  ),
-                                ));
-                              },
-                            );
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        },
+                                      ),
+                                    );
+                                  },
+                                );
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          ),
+                          const AddTaskLine(),
+                        ],
                       ),
-                      const AddTaskLine(),
-                    ],
+                    ),
                   ),
                 ),
               ),
