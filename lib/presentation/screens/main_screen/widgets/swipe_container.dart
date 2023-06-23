@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../../bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
+import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import '../../../../utils/constants.dart';
 
 class SwipeableTodoContainer extends StatefulWidget {

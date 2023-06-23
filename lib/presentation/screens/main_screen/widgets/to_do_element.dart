@@ -5,6 +5,7 @@ import '../../../../domain/models/todo_task.dart';
 import 'to_do_checkbox.dart';
 import '../../task_screen/task_screen.dart';
 import '../../../../utils/constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ToDoElement extends StatelessWidget {
   const ToDoElement({
@@ -49,7 +50,9 @@ class ToDoElement extends StatelessWidget {
                   ),
                   if (task.deadline != null)
                     Text(
-                      DateFormat('dd.MM.yyyy').format(task.deadline!),
+                      DateFormat('dd MMMM yyyy',
+                              AppLocalizations.of(context)?.localeName)
+                          .format(task.deadline!),
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: Theme.of(context).colorScheme.secondary),
                     )

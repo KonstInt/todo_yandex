@@ -5,15 +5,14 @@ abstract class TodoTasksState {}
 
 class TodoTasksInitial extends TodoTasksState {}
 
-
-class TodoTaskLoadedState extends TodoTasksState{
+class TodoTaskLoadedState extends TodoTasksState {
   final List<TodoTask> tasks;
   final int doneCounter;
   TodoTaskLoadedState({required this.tasks, required this.doneCounter});
 }
 
-class TodoTaskLoadingState extends TodoTasksState{
-}
+class TodoTaskLoadingState extends TodoTasksState {}
 
-class TodoTaskErrorState extends TodoTasksState{
-}
+class TodoTaskNoInternetState extends TodoTasksState {}
+
+class TodoTaskErrorState extends TodoTasksState {}

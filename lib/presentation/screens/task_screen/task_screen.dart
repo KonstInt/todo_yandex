@@ -13,8 +13,6 @@ class TaskScreen extends StatefulWidget {
   State<TaskScreen> createState() => _TaskScreenState();
 }
 
-
-
 class _TaskScreenState extends State<TaskScreen> {
   late TextEditingController _controller;
   bool dateOn = false;
@@ -39,9 +37,12 @@ class _TaskScreenState extends State<TaskScreen> {
     super.dispose();
   }
 
-  void callbackDDValue(TaskPriority value){setState(() {
-                        dropdownValue = value;
-                      });}
+  void callbackDDValue(TaskPriority value) {
+    setState(() {
+      dropdownValue = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,9 +59,16 @@ class _TaskScreenState extends State<TaskScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomTaskScreenAppBar(controller: _controller, dateOn: dateOn, dateTime: dateTime, dropdownValue: dropdownValue, task: widget.task,),
+                CustomTaskScreenAppBar(
+                  controller: _controller,
+                  dateOn: dateOn,
+                  dateTime: dateTime,
+                  dropdownValue: dropdownValue,
+                  task: widget.task,
+                ),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   constraints: const BoxConstraints(minHeight: 144),
                   decoration: BoxDecoration(
@@ -96,11 +104,11 @@ class _TaskScreenState extends State<TaskScreen> {
                   child: Text(AppLocalizations.of(context)!.priority),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      right: 16.0, left: 16.0, top: 6, bottom: 10),
-                  child: 
-                  CustomTaskScreenDropMenu(dropdownValue: dropdownValue, callbackValue: callbackDDValue)
-                ),
+                    padding: const EdgeInsets.only(
+                        right: 16.0, left: 16.0, top: 6, bottom: 10),
+                    child: CustomTaskScreenDropMenu(
+                        dropdownValue: dropdownValue,
+                        callbackValue: callbackDDValue)),
                 const Divider(
                   thickness: 1,
                   indent: 16,
@@ -119,7 +127,12 @@ class _TaskScreenState extends State<TaskScreen> {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           if (dateOn)
-                            Text(DateFormat('dd.MM.yyyy').format(dateTime),
+                            Text(
+                                DateFormat(
+                                        'dd MMMM yyyy',
+                                        AppLocalizations.of(context)
+                                            ?.localeName)
+                                    .format(dateTime),
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall!
@@ -164,7 +177,9 @@ class _TaskScreenState extends State<TaskScreen> {
                 const Divider(
                   thickness: 1,
                 ),
-                DeleteLine(task: widget.task,)
+                DeleteLine(
+                  task: widget.task,
+                )
               ],
             ),
           ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../../bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
+import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import '../../../../utils/constants.dart';
 
 //Кастомный AppBar с плавным передвижением текста и иконки как в дизайне
