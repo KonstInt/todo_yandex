@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         title: 'to_do',
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: const [
-          //Locale('en'),
+          Locale('en'),
           Locale('ru'),
         ],
         theme: lightThemeData(),
