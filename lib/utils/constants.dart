@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
-
+class MyConstants {
+  static const baseUrl = "https://beta.mrdekk.ru/todobackend";
+  static const keyLocalRevision = "lrevision";
+  static const keyRemoteRevision = "rrevision";
+  static const keyUnSynchronized = "unsynchronized";
+  //TODO: input your token
+  static const keyBearer = "classman";
+}
 
 class MyColorsLight {
   static const Color kSeparatorColor = Color(0x33000000);
@@ -18,8 +25,8 @@ class MyColorsLight {
   static const Color kColorBackPrimary = Color(0xFFF7F6F2);
   static const Color kColorBackSecondary = Color(0xFFFFFFFF);
   static const Color kColorBackElevated = Color(0xFFFFFFFF);
-  
 }
+
 class MyAssets {
   static const String kHighPriorityIcon = 'assets/icons/high_priority.svg';
   static const String kLowPriorityIcon = 'assets/icons/low_priority.svg';
@@ -28,4 +35,21 @@ class MyAssets {
   static const String kEyeCrossIcon = 'assets/icons/eye_cross.svg';
   static const String kDoneIcon = 'assets/icons/done.svg';
   static const String kRubbishIcon = 'assets/icons/rubbish.svg';
+}
+
+class MyFunctions {
+  static int fastHash(String string) {
+    var hash = 0xcbf29ce484222325;
+
+    var i = 0;
+    while (i < string.length) {
+      final codeUnit = string.codeUnitAt(i++);
+      hash ^= codeUnit >> 8;
+      hash *= 0x100000001b3;
+      hash ^= codeUnit & 0xFF;
+      hash *= 0x100000001b3;
+    }
+
+    return hash;
+  }
 }

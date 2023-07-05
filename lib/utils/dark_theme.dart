@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'constants.dart';
+
 //TODO: Dark Theme
 ThemeData basicThemeData() => ThemeData(
       colorScheme: const ColorScheme.dark(
@@ -28,7 +29,7 @@ ThemeData basicThemeData() => ThemeData(
             color: MyColorsLight.kLabelPrimary,
             fontWeight: FontWeight.w500,
             fontSize: 32,
-            height: 38/32,
+            height: 38 / 32,
           ),
         ),
         titleMedium: GoogleFonts.roboto(
@@ -36,7 +37,7 @@ ThemeData basicThemeData() => ThemeData(
             color: MyColorsLight.kLabelPrimary,
             fontWeight: FontWeight.w500,
             fontSize: 20,
-            height: 32/20,
+            height: 32 / 20,
           ),
         ),
         bodyMedium: GoogleFonts.roboto(
@@ -44,15 +45,15 @@ ThemeData basicThemeData() => ThemeData(
             color: MyColorsLight.kLabelPrimary,
             fontWeight: FontWeight.w400,
             fontSize: 16,
-            height: 20/16,
+            height: 20 / 16,
           ),
         ),
         bodySmall: GoogleFonts.roboto(
-          textStyle:const TextStyle(
+          textStyle: const TextStyle(
             color: MyColorsLight.kLabelPrimary,
             fontWeight: FontWeight.w400,
             fontSize: 14,
-            height: 20/14,
+            height: 20 / 14,
           ),
         ),
         labelLarge: GoogleFonts.roboto(
@@ -60,16 +61,13 @@ ThemeData basicThemeData() => ThemeData(
             color: MyColorsLight.kLabelPrimary,
             fontWeight: FontWeight.w500,
             fontSize: 14,
-            height: 24/14,
+            height: 24 / 14,
           ),
         ),
-
       ),
-      textSelectionTheme:TextSelectionThemeData(
-        
+      textSelectionTheme: TextSelectionThemeData(
         selectionColor: MyColorsLight.kColorBlue.withOpacity(0.3),
         selectionHandleColor: MyColorsLight.kColorBlue,
       ),
       iconTheme: const IconThemeData(color: MyColorsLight.kLabelTertiary),
-      
     );
