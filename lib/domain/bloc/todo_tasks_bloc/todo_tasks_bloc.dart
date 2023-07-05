@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:to_do_yandex/domain/exceptions/my_exceptions.dart';
 import 'package:to_do_yandex/domain/models/todo_task.dart';
 import 'package:to_do_yandex/domain/repository/todo_repository.dart';
 part 'todo_tasks_event.dart';
@@ -32,14 +33,20 @@ class TodoTasksBloc extends Bloc<TodoTasksEvent, TodoTasksState> {
       TodoTasksLoadEvent event, Emitter<TodoTasksState> emit) async {
     logger.log(Level.verbose, "Start load task event");
     emit(TodoTaskLoadingState());
-    int statusCode;
-    List<TodoTask> tmpList;
-    (statusCode, tmpList) = await repository.getAndMergeTasks();
+    List<TodoTask> tmpList = [];
+    try {
+      tmpList = await repository.getAndMergeTasks();
+    } catch (e) {
+      logger.e("Error: ${e.toString()}");
+      emit(
+          TodoTaskErrorState(errorMessage: (e as MyExceptions).errorMessage()));
+      emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
+    }
     tasks = tmpList;
     _filterFunction();
     logger.log(Level.verbose,
-        "End load task event with $statusCode code\nResultative list: $resultList");
-    logger.log(Level.verbose, jsonEncode("tasks: $tasks"));
+        "End load task event\nResultative list: ${resultList.toString()}");
+    logger.log(Level.verbose, jsonEncode("tasks: ${tasks.toString()}"));
     emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
   }
 
@@ -63,11 +70,13 @@ class TodoTasksBloc extends Bloc<TodoTasksEvent, TodoTasksState> {
         Level.verbose, "End Change Done event for task with ${event.id} id");
     emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
     //int statusCode;
-    List<TodoTask>? tmpList;
-    (_, tmpList) = await repository.changeTask(changedTask);
-    if (tmpList != null) {
-      tasks = tmpList;
-      _filterFunction();
+
+    try {
+      await repository.editTask(changedTask);
+    } catch (e) {
+      logger.e("Error: ${e.toString()}");
+      emit(
+          TodoTaskErrorState(errorMessage: (e as MyExceptions).errorMessage()));
       emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
     }
   }
@@ -82,12 +91,12 @@ class TodoTasksBloc extends Bloc<TodoTasksEvent, TodoTasksState> {
     _filterFunction();
     logger.log(Level.verbose, "End Remove event for task with ${event.id} id");
     emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
-    //int statusCode;
-    List<TodoTask>? tmpList;
-    (_, tmpList) = await repository.taskRemove(event.id);
-    if (tmpList != null) {
-      tasks = tmpList;
-      _filterFunction();
+    try {
+      await repository.removeTask(event.id);
+    } catch (e) {
+      logger.e("Error: ${e.toString()}");
+      emit(
+          TodoTaskErrorState(errorMessage: (e as MyExceptions).errorMessage()));
       emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
     }
   }
@@ -101,7 +110,14 @@ class TodoTasksBloc extends Bloc<TodoTasksEvent, TodoTasksState> {
     _filterFunction();
     logger.log(Level.verbose, "End Add task event with task  ${event.task}");
     emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
-    repository.taskAdd(event.task);
+    try {
+      await repository.addTask(event.task);
+    } catch (e) {
+      logger.e("Error: ${e.toString()}");
+      emit(
+          TodoTaskErrorState(errorMessage: (e as MyExceptions).errorMessage()));
+      emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
+    }
   }
 
   FutureOr<void> _onTodoTasksChangeDoneVisibilityEvent(
@@ -125,12 +141,12 @@ class TodoTasksBloc extends Bloc<TodoTasksEvent, TodoTasksState> {
     logger.log(Level.verbose, "End Change event with task  ${event.task}");
     emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
 
-    //int statusCode;
-    List<TodoTask>? tmpList;
-    (_, tmpList) = await repository.changeTask(event.task);
-    if (tmpList != null) {
-      tasks = tmpList;
-      _filterFunction();
+    try {
+      await repository.editTask(event.task);
+    } catch (e) {
+      logger.e("Error: ${e.toString()}");
+      emit(
+          TodoTaskErrorState(errorMessage: (e as MyExceptions).errorMessage()));
       emit(TodoTaskLoadedState(tasks: resultList, doneCounter: doneCounter));
     }
   }

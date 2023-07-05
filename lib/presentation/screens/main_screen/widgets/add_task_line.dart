@@ -34,7 +34,8 @@ class _AddTaskLineState extends State<AddTaskLine> {
         children: [
           IconButton(
             //color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).colorScheme.shadow.withOpacity(0.8),
+            disabledColor:
+                Theme.of(context).colorScheme.shadow.withOpacity(0.8),
             onPressed: !iconEnabled
                 ? null
                 : () {
@@ -45,6 +46,7 @@ class _AddTaskLineState extends State<AddTaskLine> {
                                 text: _controller.text,
                                 importance: TaskPriority.basic,
                                 done: false,
+                                isSynchronized: false,
                                 createdAt: DateTime.now(),
                                 changedAt: DateTime.now(),
                                 lastUpdatedBy: "22223332"),

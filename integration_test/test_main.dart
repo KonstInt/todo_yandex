@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_yandex/app/app.dart';
 import 'package:to_do_yandex/app/di/injection.dart';
-import 'app/app.dart';
 
 void main() {
-  setUpDI(DIOptions.dev);
+  setUpDI(DIOptions.test);
   runApp(const App());
 }

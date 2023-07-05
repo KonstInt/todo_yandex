@@ -53,13 +53,18 @@ const ApiLocalTodoTaskSchema = CollectionSchema(
       type: IsarType.byte,
       enumMap: _ApiLocalTodoTaskimportanceEnumValueMap,
     ),
-    r'last_updated_by': PropertySchema(
+    r'is_synchronized': PropertySchema(
       id: 7,
+      name: r'is_synchronized',
+      type: IsarType.bool,
+    ),
+    r'last_updated_by': PropertySchema(
+      id: 8,
       name: r'last_updated_by',
       type: IsarType.string,
     ),
     r'text': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'text',
       type: IsarType.string,
     )
@@ -124,8 +129,9 @@ void _apiLocalTodoTaskSerialize(
   writer.writeBool(offsets[4], object.done);
   writer.writeString(offsets[5], object.id);
   writer.writeByte(offsets[6], object.importance.index);
-  writer.writeString(offsets[7], object.lastUpdatedBy);
-  writer.writeString(offsets[8], object.text);
+  writer.writeBool(offsets[7], object.isSynchronized);
+  writer.writeString(offsets[8], object.lastUpdatedBy);
+  writer.writeString(offsets[9], object.text);
 }
 
 ApiLocalTodoTask _apiLocalTodoTaskDeserialize(
@@ -144,8 +150,9 @@ ApiLocalTodoTask _apiLocalTodoTaskDeserialize(
   object.importance = _ApiLocalTodoTaskimportanceValueEnumMap[
           reader.readByteOrNull(offsets[6])] ??
       ApiLocalTaskPriority.basic;
-  object.lastUpdatedBy = reader.readStringOrNull(offsets[7]);
-  object.text = reader.readStringOrNull(offsets[8]);
+  object.isSynchronized = reader.readBoolOrNull(offsets[7]);
+  object.lastUpdatedBy = reader.readStringOrNull(offsets[8]);
+  object.text = reader.readStringOrNull(offsets[9]);
   return object;
 }
 
@@ -173,8 +180,10 @@ P _apiLocalTodoTaskDeserializeProp<P>(
               reader.readByteOrNull(offset)] ??
           ApiLocalTaskPriority.basic) as P;
     case 7:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 8:
+      return (reader.readStringOrNull(offset)) as P;
+    case 9:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -900,6 +909,34 @@ extension ApiLocalTodoTaskQueryFilter
   }
 
   QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QAfterFilterCondition>
+      isSynchronizedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'is_synchronized',
+      ));
+    });
+  }
+
+  QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QAfterFilterCondition>
+      isSynchronizedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'is_synchronized',
+      ));
+    });
+  }
+
+  QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QAfterFilterCondition>
+      isSynchronizedEqualTo(bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'is_synchronized',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QAfterFilterCondition>
       isarIdEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1368,6 +1405,20 @@ extension ApiLocalTodoTaskQuerySortBy
   }
 
   QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QAfterSortBy>
+      sortByIsSynchronized() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'is_synchronized', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QAfterSortBy>
+      sortByIsSynchronizedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'is_synchronized', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QAfterSortBy>
       sortByLastUpdatedBy() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'last_updated_by', Sort.asc);
@@ -1493,6 +1544,20 @@ extension ApiLocalTodoTaskQuerySortThenBy
   }
 
   QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QAfterSortBy>
+      thenByIsSynchronized() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'is_synchronized', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QAfterSortBy>
+      thenByIsSynchronizedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'is_synchronized', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QAfterSortBy>
       thenByIsarId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isar_id', Sort.asc);
@@ -1585,6 +1650,13 @@ extension ApiLocalTodoTaskQueryWhereDistinct
   }
 
   QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QDistinct>
+      distinctByIsSynchronized() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'is_synchronized');
+    });
+  }
+
+  QueryBuilder<ApiLocalTodoTask, ApiLocalTodoTask, QDistinct>
       distinctByLastUpdatedBy({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'last_updated_by',
@@ -1651,6 +1723,13 @@ extension ApiLocalTodoTaskQueryProperty
       importanceProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'importance');
+    });
+  }
+
+  QueryBuilder<ApiLocalTodoTask, bool?, QQueryOperations>
+      isSynchronizedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'is_synchronized');
     });
   }
 

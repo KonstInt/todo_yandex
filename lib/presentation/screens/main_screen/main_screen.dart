@@ -26,30 +26,27 @@ class _MainScreenState extends State<MainScreen> {
               currentFocus.unfocus();
             }
           },
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: SliverAppBarDelegate(),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Card(
-                      elevation: 3,
-                      margin: const EdgeInsets.all(0),
-                      child: RefreshIndicator(
-                        displacement: 5,
-                        onRefresh: () async {
-                          context
-                              .read<TodoTasksBloc>()
-                              .add(TodoTasksLoadEvent());
-                        },
-                        child: ListView(
-                          shrinkWrap: true,
+          child: RefreshIndicator(
+            onRefresh: () async {
+              context.read<TodoTasksBloc>().add(TodoTasksLoadEvent());
+            },
+            child: CustomScrollView(
+              //physics: BouncingScrollPhysics(),
+              slivers: <Widget>[
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: SliverAppBarDelegate(),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Card(
+                        elevation: 3,
+                        margin: const EdgeInsets.all(0),
+                        child: Column(
                           children: [
                             BlocBuilder<TodoTasksBloc, TodoTasksState>(
                               builder: (context, state) {
@@ -88,8 +85,8 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(

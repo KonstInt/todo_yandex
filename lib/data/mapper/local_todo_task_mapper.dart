@@ -9,14 +9,16 @@ class LocalTodoTaskMapper {
       deadline: task.deadline,
       importance: LocalImportanceMapper.fromApi(task.importance),
       done: task.done ?? false,
+      isSynchronized: task.isSynchronized ?? false,
       createdAt: task.createdAt ?? DateTime.now(),
       changedAt: task.changedAt ?? DateTime.now(),
       lastUpdatedBy: task.lastUpdatedBy ?? "",
     );
   }
 
-  static ApiLocalTodoTask toApi(TodoTask task) {
+  static ApiLocalTodoTask toApi(TodoTask task, bool isSynchronized) {
     return ApiLocalTodoTask()
+      ..isSynchronized = isSynchronized
       ..id = task.id
       ..text = task.text
       ..importance = LocalImportanceMapper.toApi(task.importance)

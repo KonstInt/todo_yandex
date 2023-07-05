@@ -26,6 +26,7 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     return Container(
       height: visibleMainHeight,
       width: MediaQuery.of(context).size.width,
+      //margin: EdgeInsets.only(top: (1-animationVal)*minExtent),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
         boxShadow: [

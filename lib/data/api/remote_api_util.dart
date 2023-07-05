@@ -7,13 +7,16 @@ class RemoteApiUtil {
   final RemoteToDoService _remoteToDoService;
   RemoteApiUtil(this._remoteToDoService);
 
-  Future<TodoTask?> getTodoTask(String id) async {
-    final result = await _remoteToDoService.getTodoTask(id);
-    return result == null ? null : RemoteTodoTaskMapper.fromApi(result);
+  Future<void> addTask({required TodoTask todoTask}) async {
+    await _remoteToDoService.addTask(RemoteTodoTaskMapper.toApi(todoTask));
   }
 
-  Future<List<TodoTask>> getAllTodoTasks() async {
-    final tmp = await _remoteToDoService.getAllTodoTasks();
+  Future<void> editTask({required TodoTask todoTask}) async {
+    await _remoteToDoService.editTask(RemoteTodoTaskMapper.toApi(todoTask));
+  }
+
+  Future<List<TodoTask>> getList() async {
+    final tmp = await _remoteToDoService.getList();
     final List<TodoTask> result = [];
 
     for (ApiRemoteTodoTask task in tmp) {
@@ -22,31 +25,26 @@ class RemoteApiUtil {
     return result;
   }
 
-  Future<List<TodoTask>> putAllTodoTasks(List<TodoTask> todoTasks) async {
+  Future<TodoTask?> getTask({required String taskId}) async {
+    final result = await _remoteToDoService.getTask(taskId);
+    return result == null ? null : RemoteTodoTaskMapper.fromApi(result);
+  }
+
+  Future<void> removeTask({required String taskId}) async {
+    await _remoteToDoService.removeTask(taskId);
+  }
+
+  Future<List<TodoTask>> updateList({required List<TodoTask> todoTasks}) async {
     final List<ApiRemoteTodoTask> remoteTasks = [];
     for (TodoTask task in todoTasks) {
       remoteTasks.add(RemoteTodoTaskMapper.toApi(task));
     }
-    final tmp = await _remoteToDoService.postAllTodoTasks(remoteTasks);
+    final tmp = await _remoteToDoService.updateList(remoteTasks);
     final List<TodoTask> result = [];
 
     for (ApiRemoteTodoTask task in tmp) {
       result.add(RemoteTodoTaskMapper.fromApi(task));
     }
     return result;
-  }
-
-  Future<bool> putTodoTask(TodoTask todoTask) async {
-    return await _remoteToDoService
-        .postTodoTask(RemoteTodoTaskMapper.toApi(todoTask));
-  }
-
-  Future<bool> editTodoTask(TodoTask todoTask) async {
-    return await _remoteToDoService
-        .editTodoTask(RemoteTodoTaskMapper.toApi(todoTask));
-  }
-
-  Future<bool> deleteTodoTask(String id) async {
-    return await _remoteToDoService.deleteTodoTask(id);
   }
 }

@@ -1,14 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MyConstants {
   static const baseUrl = "https://beta.mrdekk.ru/todobackend";
-  static const keyRevision = "revision";
+  static const keyLocalRevision = "lrevision";
+  static const keyRemoteRevision = "rrevision";
   static const keyUnSynchronized = "unsynchronized";
   //TODO: input your token
-  static const keyBearer = "";
+  static const keyBearer = "classman";
 }
 
 class MyColorsLight {
@@ -53,38 +51,5 @@ class MyFunctions {
     }
 
     return hash;
-  }
-
-  static Future<int> getRevision() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    int i = sharedPrefs.getInt(MyConstants.keyRevision) ?? 0;
-    return i;
-  }
-
-  static Future<bool> setRevision(int revision) async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    Future<bool> b = sharedPrefs.setInt(MyConstants.keyRevision, revision);
-    return b;
-  }
-
-  static Future<Map<String, int>> getUnSynchronizedDeleted() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    final String stringResult =
-        sharedPrefs.getString(MyConstants.keyUnSynchronized) ?? "";
-    Map<String, int> result = {};
-    if (stringResult.isNotEmpty) {
-      Map<dynamic, dynamic> tmp = jsonDecode(stringResult);
-      tmp.forEach((key, value) {
-        result.addAll({key as String: value as int});
-      });
-    }
-    return result;
-  }
-
-  static Future<bool> setUnSynchronizedDeleted(
-      Map<String, int> deletedItems) async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    return sharedPrefs.setString(MyConstants.keyUnSynchronized,
-        deletedItems.isNotEmpty ? jsonEncode(deletedItems) : "");
   }
 }

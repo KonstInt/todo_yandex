@@ -15,4 +15,7 @@ class TodoTaskLoadingState extends TodoTasksState {}
 
 class TodoTaskNoInternetState extends TodoTasksState {}
 
-class TodoTaskErrorState extends TodoTasksState {}
+class TodoTaskErrorState extends TodoTasksState {
+  final String errorMessage;
+  TodoTaskErrorState({required this.errorMessage});
+}

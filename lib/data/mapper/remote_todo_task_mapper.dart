@@ -11,6 +11,7 @@ class RemoteTodoTaskMapper {
           : DateTime.fromMillisecondsSinceEpoch(task.deadline!),
       importance: RemoteImportanceMapper.fromApi(task.importance),
       done: task.done,
+      isSynchronized: true,
       createdAt: DateTime.fromMillisecondsSinceEpoch(task.createdAt),
       changedAt: DateTime.fromMillisecondsSinceEpoch(task.changedAt),
       lastUpdatedBy: task.lastUpdatedBy,

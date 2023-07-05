@@ -1,137 +1,246 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:to_do_yandex/domain/repository/local/to_do_tasks_local_repository.dart';
-import 'package:to_do_yandex/domain/repository/remote/to_do_tasks_remote_repository.dart';
-
-import '../../internal/dependencies/repository_module.dart';
-import '../../utils/constants.dart';
+import 'package:get_it/get_it.dart';
+import 'package:to_do_yandex/domain/exceptions/my_exceptions.dart';
+import 'package:to_do_yandex/domain/repository/abstract_shared_prefs_repository.dart';
+import 'package:to_do_yandex/domain/repository/abstract_to_do_tasks_repository.dart';
 import '../models/todo_task.dart';
 
 class TodoRepository {
-  late final TodoTaskLocalRepository localRepository;
-  late final TodoTaskRemoteRepository remoteRepository;
+  late final AbstractTodoTasksRepository localRepository;
+  late final AbstractTodoTasksRepository remoteRepository;
   TodoRepository() {
-    localRepository = RepositoryModule.localRepository();
-    remoteRepository = RepositoryModule.remoteRepository();
+    localRepository = GetIt.I
+        .get<AbstractTodoTasksRepository>(instanceName: "LocalRepository");
+    remoteRepository = GetIt.I
+        .get<AbstractTodoTasksRepository>(instanceName: "RemoteRepository");
   }
 
-  Future<(int, List<TodoTask>)> getAndMergeTasks() async {
-    List<TodoTask> tasks = [];
+  Future<List<TodoTask>> getAndMergeTasks() async {
+    List<TodoTask> todoTasks = [];
     List<TodoTask> localTmpTasks = [];
     List<TodoTask> remoteTmpTasks = [];
-    int statusCode = 0;
+
     try {
-      localTmpTasks = await localRepository.getList();
+      //Try to get list from server
       remoteTmpTasks = await remoteRepository.getList();
-      //tasks = await remoteRepository.updateList(todoTasks: tasks);
     } catch (e) {
-      final tmp = e as DioException;
-      if (tmp.error is SocketException) {
-        //emit(TodoTaskNoInternetState());
-        statusCode = -1;
-      } else {
-        //emit(TodoTaskErrorState());
-        statusCode = -3;
-        return (statusCode, <TodoTask>[]);
+      final remoteErr = (e as DioException).error;
+      //If invalid input
+      if (remoteErr is RemoteInvalidServerInputErrorException) {
+        throw RemoteInvalidServerInputErrorException();
+      }
+      if (remoteErr is NoInternetErrorException) {
+        try {
+          //If no internet then return local list
+          return await localRepository.getList();
+        } catch (e) {
+          //If error then db error
+          throw DatabaseErrorException();
+        }
       }
     }
+    //If internet synchronize successful
+    try {
+      //Load local list
+      localTmpTasks = await localRepository.getList();
+    } catch (e) {
+      //If error then db error
+      throw DatabaseErrorException();
+    }
+    todoTasks = await _mergeTasks(local: localTmpTasks, remote: remoteTmpTasks);
 
-    if (remoteTmpTasks.isEmpty) {
-      tasks = localTmpTasks;
-    } else {
-      tasks = await _mergeTasks(localTmpTasks, remoteTmpTasks);
+    try {
+      //Try put merged tasks to server
+      await remoteRepository.updateList(todoTasks: todoTasks);
+    } catch (e) {
+      final remoteErr = (e as DioException).error;
+      //If invalid input
+      if (remoteErr is RemoteInvalidServerInputErrorException) {
+        throw RemoteInvalidServerInputErrorException();
+      }
     }
     try {
-      await remoteRepository.updateList(todoTasks: tasks);
-      MyFunctions.setUnSynchronizedDeleted({});
+      //Try put merged tasks to local db
+      await localRepository.updateList(todoTasks: todoTasks);
     } catch (e) {
-      //emit(TodoTaskNoInternetState());
-      statusCode = -1;
+      //If error then db error
+      throw DatabaseErrorException();
     }
 
-    return (statusCode, tasks);
+    return todoTasks;
   }
 
-  Future<(int, List<TodoTask>?)> changeTask(TodoTask changedTask) async {
+  Future<void> editTask(TodoTask changedTask) async {
     try {
-      await localRepository.editTask(todoTask: changedTask);
+      //Try to change task on server
       await remoteRepository.editTask(todoTask: changedTask);
-      return (0, null);
     } catch (e) {
-      final tmp = e as DioException;
-      if (tmp.message != null) {
-        if (tmp.message!.contains("400")) {
-          return (await getAndMergeTasks());
+      final remoteErr = (e as DioException).error;
+      //If unsynchronized
+      if (remoteErr is RemoteUnsynchronizedErrorException) {
+        //Synchronized them
+        await getAndMergeTasks();
+        //Try again
+        return editTask(changedTask);
+      }
+      //If invalid input
+      if (remoteErr is RemoteInvalidServerInputErrorException) {
+        throw RemoteInvalidServerInputErrorException();
+      }
+      if (remoteErr is NoInternetErrorException) {
+        try {
+          //If no internet then write to local db with unsynchronized flag
+          return await localRepository.editTask(
+              todoTask: changedTask, isSynchronized: false);
+        } catch (e) {
+          //If error then db error
+          throw DatabaseErrorException();
         }
       }
-      if (tmp.error is SocketException) {
-        return (-1, null);
-      } else {
-        return (-3, null);
+      //If after synchronization task was deleted
+      if (remoteErr is RemotePageNotExistErrorException) {
+        return addTask(changedTask);
       }
+    }
+    //If internet synchronize successful
+    try {
+      await localRepository.editTask(
+          todoTask: changedTask, isSynchronized: true);
+    } catch (e) {
+      //If error then db error
+      throw DatabaseErrorException();
     }
   }
 
-  Future<(int, List<TodoTask>?)> taskRemove(String id) async {
+  Future<void> removeTask(String taskId) async {
     try {
-      await localRepository.removeTask(taskId: id);
-      await remoteRepository.removeTask(taskId: id);
-      return (0, null);
+      //Try to delete task on server
+      await remoteRepository.removeTask(taskId: taskId);
     } catch (e) {
-      final tmp = e as DioException;
-      if (tmp.error is SocketException) {
-        return (-1, null);
-      } else {
-        if (tmp.message != null) {
-          if (tmp.message!.contains("400")) {
-            return (await getAndMergeTasks());
-          }
-        }
-        if (tmp.error is SocketException) {
-          return (-1, null);
-        } else {
-          return (-3, null);
+      final remoteErr = (e as DioException).error;
+      //If unsynchronized
+      if (remoteErr is RemoteUnsynchronizedErrorException) {
+        //Synchronized them
+        await getAndMergeTasks();
+        //Try again
+        return removeTask(taskId);
+      }
+      //If invalid input
+      if (remoteErr is RemoteInvalidServerInputErrorException) {
+        throw RemoteInvalidServerInputErrorException();
+      }
+      if (remoteErr is NoInternetErrorException) {
+        try {
+          //If no internet then write shared prefs id and time
+          Map<String, int> deletedItems = await GetIt.I
+              .get<AbstractSharedPrefsRepository>(
+                  instanceName: "SharedPrefsRepository")
+              .getUnSynchronizedDeleted();
+
+          deletedItems.addAll({taskId: DateTime.now().millisecondsSinceEpoch});
+
+          await GetIt.I
+              .get<AbstractSharedPrefsRepository>(
+                  instanceName: "SharedPrefsRepository")
+              .setUnSynchronizedDeleted(deletedItems);
+          //And delete it from local
+          return await localRepository.removeTask(taskId: taskId);
+        } catch (e) {
+          //If error then db error
+          throw DatabaseErrorException();
         }
       }
+      //If after synchronization task was deleted
+      if (remoteErr is RemotePageNotExistErrorException) {
+        //Then just stop
+        return;
+      }
+    }
+    //If internet synchronize successful
+    try {
+      await localRepository.removeTask(taskId: taskId);
+    } catch (e) {
+      //If error then db error
+      throw DatabaseErrorException();
     }
   }
 
-  Future<int> taskAdd(TodoTask task) async {
+  Future<void> addTask(TodoTask todoTask) async {
     try {
-      await localRepository.addTask(todoTask: task);
-      await remoteRepository.addTask(todoTask: task);
-      return 0;
+      //Try to add task on server
+      await remoteRepository.addTask(todoTask: todoTask);
     } catch (e) {
-      final tmp = e as DioException;
-      if (tmp.error is SocketException) {
-        return -1;
-      } else {
-        return -3;
+      final remoteErr = (e as DioException).error;
+      //If unsynchronized
+      if (remoteErr is RemoteUnsynchronizedErrorException) {
+        //Synchronized them
+        await getAndMergeTasks();
+        //Try again
+        return addTask(todoTask);
       }
+      //If invalid input
+      if (remoteErr is RemoteInvalidServerInputErrorException) {
+        throw RemoteInvalidServerInputErrorException();
+      }
+      if (remoteErr is NoInternetErrorException) {
+        try {
+          //If no internet then write to local db with unsynchronized flag
+          return await localRepository.addTask(
+              todoTask: todoTask, isSynchronized: false);
+        } catch (e) {
+          //If error then db error
+          throw DatabaseErrorException();
+        }
+      }
+    }
+    //If internet synchronize successful
+    try {
+      await localRepository.addTask(
+        todoTask: todoTask,
+        isSynchronized: true,
+      );
+    } catch (e) {
+      //If error then db error
+      throw DatabaseErrorException();
     }
   }
 
   Future<List<TodoTask>> _mergeTasks(
-      List<TodoTask> tasks1, List<TodoTask> tasks2) async {
-    Map<String, int> unsynchronized =
-        await MyFunctions.getUnSynchronizedDeleted();
-    List<TodoTask> resultList = tasks1;
-    for (TodoTask task in tasks2) {
+      {required List<TodoTask> local, required List<TodoTask> remote}) async {
+    //Get unsynchronized deleted Tasks ids
+    Map<String, int> unsynchronized = await GetIt.I
+        .get<AbstractSharedPrefsRepository>(
+            instanceName: "SharedPrefsRepository")
+        .getUnSynchronizedDeleted();
+
+    List<TodoTask> resultList = [];
+    //Get all tasks in local list which wasn't synchronized
+    resultList.addAll(local.where((task) => task.isSynchronized == false));
+
+    for (TodoTask task in remote) {
+      //Try to find same tasks index
       final int tmpIndex =
           resultList.indexWhere((element) => element.id == task.id);
+      //If found
       if (tmpIndex != -1) {
+        //Add last updated task
         if (resultList[tmpIndex].changedAt.millisecondsSinceEpoch <
             task.createdAt.millisecondsSinceEpoch) {
           resultList[tmpIndex] = task;
         }
-      } else {
+      }
+      //If not found
+      else {
+        //Try to check if we already delete this task in local
         if (unsynchronized.containsKey(task.id)) {
+          //If task was local deleted and not updated after it
           if ((unsynchronized[task.id] ?? 0) <
               task.changedAt.millisecondsSinceEpoch) {
             resultList.add(task);
           }
-        } else {
+        }
+        //If task was deleted but updated after it
+        else {
           resultList.add(task);
         }
       }
