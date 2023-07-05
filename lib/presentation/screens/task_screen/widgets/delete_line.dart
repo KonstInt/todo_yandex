@@ -26,10 +26,10 @@ class DeleteLine extends StatelessWidget {
           children: [
             SvgPicture.asset(
               MyAssets.kRubbishIcon,
-              theme: SvgTheme(
-                  currentColor: task != null
+              colorFilter: ColorFilter.mode( task != null
                       ? MyColorsLight.kColorRed
-                      : Theme.of(context).colorScheme.secondary),
+                      : Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+             
             ),
             const SizedBox(
               width: 14,
