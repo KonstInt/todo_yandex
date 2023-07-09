@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'package:to_do_yandex/presentation/screens/task_screen/widgets/custom_appbar.dart';
 import 'package:to_do_yandex/presentation/screens/task_screen/widgets/custom_task_screen_drop_menu.dart';
 import 'package:to_do_yandex/presentation/screens/task_screen/widgets/delete_line.dart';
@@ -7,8 +9,8 @@ import '../../../domain/models/todo_task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskScreen extends StatefulWidget {
-  const TaskScreen({super.key, this.task});
-  final TodoTask? task;
+  const TaskScreen({super.key, this.taskId});
+  final String? taskId;
   @override
   State<TaskScreen> createState() => _TaskScreenState();
 }
@@ -17,17 +19,18 @@ class _TaskScreenState extends State<TaskScreen> {
   late TextEditingController _controller;
   bool dateOn = false;
   TaskPriority? dropdownValue;
+  TodoTask? task;
   DateTime dateTime = DateTime.now();
   @override
   void initState() {
     super.initState();
-
     _controller = TextEditingController();
-    if (widget.task != null) {
-      dateOn = widget.task!.deadline != null ? true : false;
-      _controller.text = widget.task!.text;
-      dateTime = widget.task!.deadline ?? DateTime.now();
-      dropdownValue = widget.task!.importance;
+    task = context.read<TodoTasksBloc>().getTaskById(widget.taskId);
+    if (task != null) {
+      dateOn = task!.deadline != null ? true : false;
+      _controller.text = task!.text;
+      dateTime = task!.deadline ?? DateTime.now();
+      dropdownValue = task!.importance;
     }
   }
 
@@ -64,7 +67,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   dateOn: dateOn,
                   dateTime: dateTime,
                   dropdownValue: dropdownValue,
-                  task: widget.task,
+                  task: task,
                 ),
                 Container(
                   margin:
@@ -178,7 +181,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   thickness: 1,
                 ),
                 DeleteLine(
-                  task: widget.task,
+                  task: task,
                 )
               ],
             ),

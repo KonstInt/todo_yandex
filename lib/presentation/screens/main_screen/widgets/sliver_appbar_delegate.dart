@@ -54,7 +54,7 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                   opacity: animationVal,
                   child: Text(
                     AppLocalizations.of(context)!.done +
-                        (state is TodoTaskLoadedState
+                        (state is TodoTasksListLoadedState
                             ? state.doneCounter.toString()
                             : " "),
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(

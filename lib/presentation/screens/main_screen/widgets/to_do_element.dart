@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:to_do_yandex/app/navigation/router_delegate.dart';
 import '../../../../domain/models/todo_task.dart';
 import 'to_do_checkbox.dart';
-import '../../task_screen/task_screen.dart';
 import '../../../../utils/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ToDoElement extends StatelessWidget {
   const ToDoElement({
@@ -31,10 +33,12 @@ class ToDoElement extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 4),
+                    padding: kIsWeb
+                        ? const EdgeInsets.only(top: 5.0, bottom: 4)
+                        : const EdgeInsets.only(top: 10.0, bottom: 4),
                     child: Text(
                       task.text,
                       maxLines: 3,
@@ -73,12 +77,8 @@ class ToDoElement extends StatelessWidget {
                     highlightColor: Colors.transparent,
                     color: Colors.transparent,
                     padding: const EdgeInsets.all(0),
-                    onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => TaskScreen(
-                                    task: task,
-                                  )),
-                        ),
+                    onPressed: () =>
+                        GetIt.I<MyRouterDelegate>().showItemDetails(task.id),
                     icon: SvgPicture.asset(MyAssets.kInfoOutlinedIcon)),
               ),
             ),

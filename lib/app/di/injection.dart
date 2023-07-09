@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:to_do_yandex/app/navigation/route_information_parser.dart';
+import 'package:to_do_yandex/app/navigation/router_delegate.dart';
 import 'package:to_do_yandex/app/tests_widgets/services/local/local_todo_service_mockable.dart';
 import 'package:to_do_yandex/app/tests_widgets/services/remote/remote_todo_service_mockable.dart';
 import 'package:to_do_yandex/app/tests_widgets/services/sharedprefs/shared_prefs_servise_mockable.dart';
@@ -16,6 +18,10 @@ import '../../data/repository/local/todo_data_local_repository.dart';
 
 void setUpDI(DIOptions options) {
   final getIt = GetIt.instance;
+
+  getIt.registerLazySingleton<MyRouterDelegate>(() => MyRouterDelegate());
+  getIt.registerLazySingleton<CustomRouteInformationParser>(
+      () => CustomRouteInformationParser());
   switch (options) {
     ///DEV OPTIONS
     case DIOptions.dev:

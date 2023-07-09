@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:to_do_yandex/app/navigation/router_delegate.dart';
 import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'widgets/add_task_line.dart';
 import 'widgets/swipe_container.dart';
 import 'widgets/to_do_element.dart';
-import '../task_screen/task_screen.dart';
 import 'widgets/sliver_appbar_delegate.dart';
 
 class MainScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
           },
           child: RefreshIndicator(
             onRefresh: () async {
-              context.read<TodoTasksBloc>().add(TodoTasksLoadEvent());
+              context.read<TodoTasksBloc>().add(TodoTasksListLoadEvent());
             },
             child: CustomScrollView(
               //physics: BouncingScrollPhysics(),
@@ -50,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
                           children: [
                             BlocBuilder<TodoTasksBloc, TodoTasksState>(
                               builder: (context, state) {
-                                if (state is TodoTaskLoadedState) {
+                                if (state is TodoTasksListLoadedState) {
                                   return ListView.builder(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10),
@@ -91,9 +92,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const TaskScreen()),
-            );
+            GetIt.I<MyRouterDelegate>().showAdd();
           },
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(

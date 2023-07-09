@@ -6,7 +6,7 @@ class MyConstants {
   static const keyRemoteRevision = "rrevision";
   static const keyUnSynchronized = "unsynchronized";
   //TODO: input your token
-  static const keyBearer = "__";
+  static const keyBearer = "___";
 }
 
 class MyColorsLight {
