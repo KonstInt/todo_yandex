@@ -1,0 +1,31 @@
+name: CI
+env: 
+    FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
+on: 
+  pull_request:
+    branches:
+      - master
+jobs:
+  flutter_test: 
+    name: Run flutter test and analyze 
+    runs-on: buntu-latest
+    steps:
+      - uses: actions/checkout@v2 
+      - uses: actions/setup-java@v1
+        with:
+          java-version: "12.X" 
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: "stable"
+      - run: flutter pub run build_runner build --delete-conflicting-outputs
+      - run: curl -sL https://firebase.tools | bash
+      - run: dart pub global activate flutterfire_cli
+      - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
+      - run: flutterfire configure --project="todo-yandex-flutter" 
+             --platforms="android" 
+             --ios-bundle-id="com.forecastmoney.forecastMoney" 
+             --android-package-name="com.forecastmoney.forecast_money" --yes 
+             --token=env.FIREBASE_TOKEN
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
