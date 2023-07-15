@@ -35,9 +35,10 @@ jobs:
       - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
       - run: flutterfire configure --project="todo-yandex-flutter" 
              --platforms="android" 
-             --ios-bundle-id="com.forecastmoney.forecastMoney" 
-             --android-package-name="com.forecastmoney.forecast_money" --yes 
+             --ios-bundle-id="todo-yandex-flutter" 
+             --android-package-name="todo-yandex-flutter" --yes 
              --token=env.FIREBASE_TOKEN
+      - run: flutterfire config --android-app-id=com.example.to_do_yandex.dev
       - run: flutter pub get
 
              
