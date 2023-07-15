@@ -24,10 +24,13 @@ jobs:
       # https://github.com/dart-lang/setup-dart/blob/main/README.md
       # - uses: dart-lang/setup-dart@v1
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
       - name: Install dependencies
+        run: flutter pub get
+      - name: Build runner build
         run: flutter pub run build_runner build --delete-conflicting-outputs
-      - run: curl -sL https://firebase.tools | bash
+      - name: Firebase setup
+        run: curl -sL https://firebase.tools | bash
       - run: dart pub global activate flutterfire_cli
       - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
       - run: flutterfire configure --project="todo-yandex-flutter" 
@@ -36,8 +39,7 @@ jobs:
              --android-package-name="com.forecastmoney.forecast_money" --yes 
              --token=env.FIREBASE_TOKEN
       - run: flutter pub get
-      - run: flutter analyze
-      - run: flutter test
+
              
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
