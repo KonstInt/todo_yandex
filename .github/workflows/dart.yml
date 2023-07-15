@@ -33,7 +33,8 @@ jobs:
         run: curl -sL https://firebase.tools | bash
       - run: dart pub global activate flutterfire_cli
       - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
-      - run: flutterfire configure --token=env.FIREBASE_TOKEN --project="todo-yandex-flutter" 
+      - run: firebase login:ci  
+      - run: flutterfire configure --project="todo-yandex-flutter" 
              --platforms="android" 
              --ios-bundle-id="todo-yandex-flutter" 
              --android-package-name="todo-yandex-flutter" --yes 
