@@ -1,6 +1,4 @@
 name: CI
-env: 
-    FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
 on: 
   pull_request:
     branches:
