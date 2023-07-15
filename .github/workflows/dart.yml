@@ -29,20 +29,13 @@ jobs:
         run: flutter pub get
       - name: Build runner build
         run: flutter pub run build_runner build --delete-conflicting-outputs
-      - name: Firebase setup
-        run: curl -sL https://firebase.tools | bash
-      - run: dart pub global activate flutterfire_cli
-      - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
-      - run: firebase login:ci  
-      - run: flutterfire configure --project="todo-yandex-flutter" 
-             --platforms="android" 
-             --ios-bundle-id="todo-yandex-flutter" 
-             --android-package-name="todo-yandex-flutter" --yes 
-             
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
       - run: flutterfire config --android-app-id=com.example.to_do_yandex.dev
       - run: flutter pub get
-
-             
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
       # - name: Verify formatting
