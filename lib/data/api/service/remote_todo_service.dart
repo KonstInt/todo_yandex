@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:to_do_yandex/data/api/model/remote/api_remote_todo_task.dart';
 import 'package:to_do_yandex/domain/repository/abstract_shared_prefs_repository.dart';
-import 'package:to_do_yandex/utils/constants.dart';
+import 'package:to_do_yandex/app/utils/constants.dart';
 import '../../../domain/exceptions/my_exceptions.dart';
 
 class RemoteToDoService {
@@ -15,6 +15,7 @@ class RemoteToDoService {
         connectTimeout: const Duration(milliseconds: 5000),
         headers: {
           "Authorization": "Bearer ${MyConstants.keyBearer}",
+
         });
     dio = Dio(options);
     dio.interceptors.add(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
@@ -33,12 +34,12 @@ class _AddTaskLineState extends State<AddTaskLine> {
       child: Row(
         children: [
           IconButton(
-            //color: Theme.of(context).primaryColor,
             disabledColor:
-                Theme.of(context).colorScheme.shadow.withOpacity(0.8),
+                Theme.of(context).colorScheme.secondary.withOpacity(0.3),
             onPressed: !iconEnabled
                 ? null
                 : () {
+                    HapticFeedback.lightImpact();
                     context.read<TodoTasksBloc>().add(
                           TodoTasksAddEvent(
                             task: TodoTask(
@@ -81,7 +82,7 @@ class _AddTaskLineState extends State<AddTaskLine> {
                 hintStyle: Theme.of(context)
                     .textTheme
                     .bodyMedium!
-                    .copyWith(color: Theme.of(context).colorScheme.shadow),
+                    .copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
             ),
           ),

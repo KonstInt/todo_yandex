@@ -66,7 +66,8 @@ void main() {
     });
 
     test('Edit test', () async {
-      tasks[0].deadline = DateTime.fromMillisecondsSinceEpoch(123456789012);
+      tasks[0] = tasks[0].copyWith(
+          deadline: DateTime.fromMillisecondsSinceEpoch(123456789012));
       await repository.editTask(tasks[0]);
       final mergedTasks = await repository.getAndMergeTasks();
       expect(mergedTasks, tasks);

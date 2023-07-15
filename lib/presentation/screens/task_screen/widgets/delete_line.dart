@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
-import 'package:to_do_yandex/utils/constants.dart';
+import 'package:to_do_yandex/app/utils/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../domain/models/todo_task.dart';
 
@@ -28,7 +28,7 @@ class DeleteLine extends StatelessWidget {
               MyAssets.kRubbishIcon,
               colorFilter: ColorFilter.mode(
                   task != null
-                      ? MyColorsLight.kColorRed
+                      ? CommonColors.kColorRed
                       : Theme.of(context).colorScheme.secondary,
                   BlendMode.srcIn),
             ),
@@ -39,7 +39,7 @@ class DeleteLine extends StatelessWidget {
               AppLocalizations.of(context)!.delete,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: task != null
-                        ? MyColorsLight.kColorRed
+                        ? CommonColors.kColorRed
                         : Theme.of(context).colorScheme.secondary,
                   ),
             )

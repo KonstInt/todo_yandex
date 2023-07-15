@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../utils/constants.dart';
+import '../../../app/utils/constants.dart';
 
 class SharedPrefsService {
   Future<int> getRemoteRevision() async {

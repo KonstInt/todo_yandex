@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:to_do_yandex/domain/exceptions/my_exceptions.dart';
 import 'package:to_do_yandex/domain/repository/abstract_shared_prefs_repository.dart';
@@ -35,6 +36,8 @@ class TodoRepository {
           return await localRepository.getList();
         } catch (e) {
           //If error then db error
+          FirebaseCrashlytics.instance
+              .recordError(DatabaseErrorException(), StackTrace.current);
           throw DatabaseErrorException();
         }
       }
@@ -45,6 +48,8 @@ class TodoRepository {
       localTmpTasks = await localRepository.getList();
     } catch (e) {
       //If error then db error
+      FirebaseCrashlytics.instance
+          .recordError(DatabaseErrorException(), StackTrace.current);
       throw DatabaseErrorException();
     }
     todoTasks = await _mergeTasks(local: localTmpTasks, remote: remoteTmpTasks);
@@ -64,6 +69,8 @@ class TodoRepository {
       await localRepository.updateList(todoTasks: todoTasks);
     } catch (e) {
       //If error then db error
+      FirebaseCrashlytics.instance
+          .recordError(DatabaseErrorException(), StackTrace.current);
       throw DatabaseErrorException();
     }
 
@@ -94,6 +101,8 @@ class TodoRepository {
               todoTask: changedTask, isSynchronized: false);
         } catch (e) {
           //If error then db error
+          FirebaseCrashlytics.instance
+              .recordError(DatabaseErrorException(), StackTrace.current);
           throw DatabaseErrorException();
         }
       }
@@ -108,6 +117,8 @@ class TodoRepository {
           todoTask: changedTask, isSynchronized: true);
     } catch (e) {
       //If error then db error
+      FirebaseCrashlytics.instance
+          .recordError(DatabaseErrorException(), StackTrace.current);
       throw DatabaseErrorException();
     }
   }
@@ -147,6 +158,8 @@ class TodoRepository {
           return await localRepository.removeTask(taskId: taskId);
         } catch (e) {
           //If error then db error
+          FirebaseCrashlytics.instance
+              .recordError(DatabaseErrorException(), StackTrace.current);
           throw DatabaseErrorException();
         }
       }
@@ -161,6 +174,8 @@ class TodoRepository {
       await localRepository.removeTask(taskId: taskId);
     } catch (e) {
       //If error then db error
+      FirebaseCrashlytics.instance
+          .recordError(DatabaseErrorException(), StackTrace.current);
       throw DatabaseErrorException();
     }
   }
@@ -189,6 +204,8 @@ class TodoRepository {
               todoTask: todoTask, isSynchronized: false);
         } catch (e) {
           //If error then db error
+          FirebaseCrashlytics.instance
+              .recordError(DatabaseErrorException(), StackTrace.current);
           throw DatabaseErrorException();
         }
       }
@@ -201,6 +218,8 @@ class TodoRepository {
       );
     } catch (e) {
       //If error then db error
+      FirebaseCrashlytics.instance
+          .recordError(DatabaseErrorException(), StackTrace.current);
       throw DatabaseErrorException();
     }
   }

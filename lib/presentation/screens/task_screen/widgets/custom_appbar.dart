@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'package:to_do_yandex/domain/models/todo_task.dart';
-import 'package:to_do_yandex/utils/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomTaskScreenAppBar extends StatelessWidget {
@@ -25,7 +25,10 @@ class CustomTaskScreenAppBar extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+              },
               icon: const Icon(Icons.close)),
           const Spacer(),
           InkWell(
@@ -64,6 +67,7 @@ class CustomTaskScreenAppBar extends StatelessWidget {
                         ),
                       );
                 }
+                HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
               }
             },
@@ -72,7 +76,7 @@ class CustomTaskScreenAppBar extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .labelLarge!
-                  .copyWith(color: MyColorsLight.kColorBlue),
+                  .copyWith(color: Theme.of(context).primaryColor),
             ),
           ),
         ],

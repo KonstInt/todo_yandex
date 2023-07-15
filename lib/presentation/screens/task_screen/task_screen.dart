@@ -98,20 +98,19 @@ class _TaskScreenState extends State<TaskScreen> {
                           .textTheme
                           .bodyMedium!
                           .copyWith(
-                              color: Theme.of(context).colorScheme.shadow),
+                              color: Theme.of(context).colorScheme.secondary),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 6),
-                  child: Text(AppLocalizations.of(context)!.priority),
-                ),
-                Padding(
                     padding: const EdgeInsets.only(
                         right: 16.0, left: 16.0, top: 6, bottom: 10),
-                    child: CustomTaskScreenDropMenu(
-                        dropdownValue: dropdownValue,
-                        callbackValue: callbackDDValue)),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: TaskDetailsImportanceField(
+                          selectedImportance: dropdownValue,
+                          onImportanceValueChanged: callbackDDValue),
+                    )),
                 const Divider(
                   thickness: 1,
                   indent: 16,
@@ -145,7 +144,6 @@ class _TaskScreenState extends State<TaskScreen> {
                       ),
                       const Spacer(),
                       Switch(
-                        activeColor: Theme.of(context).primaryColor,
                         value: dateOn,
                         onChanged: (bool value) async {
                           if (!value) {

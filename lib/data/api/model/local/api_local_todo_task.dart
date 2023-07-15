@@ -1,6 +1,6 @@
 import "package:isar/isar.dart";
 
-import "package:to_do_yandex/utils/constants.dart";
+import 'package:to_do_yandex/app/utils/constants.dart';
 
 part 'api_local_todo_task.g.dart';
 
