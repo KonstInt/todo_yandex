@@ -1,5 +1,4 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
@@ -7,11 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:to_do_yandex/app/firebase/firebase_config.dart';
 import 'package:to_do_yandex/app/utils/hex_color.dart';
 
-import '../../firebase_options.dart';
 import '../logger.dart';
 
 class FirebaseAppConfigProd extends FirebaseAppConfig {
-  FirebaseAppConfigProd(super.analytics, super.configs){}
+  FirebaseAppConfigProd(super.analytics, super.configs);
 
   @override
   Future<void> initRemoteConfigDev() async {
@@ -85,7 +83,7 @@ class FAnalyticProd implements FAnalytic {
   }
 }
 
-class FRemoteConfigsProd implements FRemoteConfigs{
+class FRemoteConfigsProd implements FRemoteConfigs {
   @override
   Color getRemoteConfigImportantColor() {
     Color color =

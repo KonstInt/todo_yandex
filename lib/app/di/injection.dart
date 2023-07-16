@@ -50,13 +50,14 @@ Future<void> setUpDI(DIOptions options) async {
 
 enum DIOptions { test, prod, dev }
 
-  Future<void> initFirebase() async {
-    logger.d('Firebase initialization started');
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    logger.d('Firebase initialized');
-  }
+Future<void> initFirebase() async {
+  logger.d('Firebase initialization started');
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  logger.d('Firebase initialized');
+}
+
 ///SETUP DEV
 Future<void> _setUpDev(GetIt getIt) async {
   await initFirebase();

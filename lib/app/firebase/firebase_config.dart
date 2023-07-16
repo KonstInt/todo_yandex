@@ -1,9 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
-
-import 'package:to_do_yandex/app/utils/hex_color.dart';
 
 abstract class FirebaseAppConfig {
   final FAnalytic _analytics;
@@ -13,10 +9,9 @@ abstract class FirebaseAppConfig {
     this._analytics,
     this._configs,
   );
-  
+
   FAnalytic get analytics => _analytics;
   FRemoteConfigs get configs => _configs;
-
 
   Future<void> initRemoteConfigDev();
 
