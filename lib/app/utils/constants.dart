@@ -5,13 +5,12 @@ class MyConstants {
   static const keyLocalRevision = "lrevision";
   static const keyRemoteRevision = "rrevision";
   static const keyUnSynchronized = "unsynchronized";
-  //TODO: input your token 
+  //TODO: input your token
   //static const keyBearer = "<your_token>";
   //And delete next line
-   static const keyBearer = String.fromEnvironment("KEY_BEARER");
+  static const keyBearer = String.fromEnvironment("KEY_BEARER");
   //Also u can use it with environment. For that input your token to .vscode/launch.json
   //Or run: flutter run -t lib/main_dev.dart --flavor dev --dart-define=KEY_BEARER=YOUR_TOKEN
- 
 }
 
 class CommonColors {
