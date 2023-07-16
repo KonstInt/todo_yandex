@@ -6,59 +6,42 @@ import 'package:to_do_yandex/app/utils/constants.dart';
 class FirebaseAppConfigMock extends FirebaseAppConfig {
   FirebaseAppConfigMock(super.analytics, super.configs);
 
+  @override
+  Future<void> initRemoteConfigDev() async {}
 
   @override
-  Future<void> initRemoteConfigDev() async {
-  }
+  Future<void> initRemoteConfigProd() async {}
 
   @override
-  Future<void> initRemoteConfigProd() async {
-  }
-
-  @override
-  void initCrashlytics() {
-  }
+  void initCrashlytics() {}
 }
 
 class FAnalyticMock implements FAnalytic {
   @override
-  void analyticDoneEvent() {
-   
-  }
+  void analyticDoneEvent() {}
 
   @override
-  void analyticDeleteEvent() {
-   
-  }
+  void analyticDeleteEvent() {}
 
   @override
-  void addTaskEvent() {
-
-  }
+  void addTaskEvent() {}
 
   @override
-  void routeToMainScreen() {
-  
-  }
+  void routeToMainScreen() {}
 
   @override
-  void routeToTaskDetailsScreen() {
-
-  }
+  void routeToTaskDetailsScreen() {}
 
   @override
-  void routeToAddTaskScreen() {
-    
-  }
+  void routeToAddTaskScreen() {}
 
   @override
-  void routeToUnknownScreen() {
-  }
+  void routeToUnknownScreen() {}
 }
 
-class FRemoteConfigsMock implements FRemoteConfigs{
+class FRemoteConfigsMock implements FRemoteConfigs {
   @override
   Color getRemoteConfigImportantColor() {
-   return CommonColors.kColorRed;
+    return CommonColors.kColorRed;
   }
 }

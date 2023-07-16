@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-
 abstract class FirebaseAppConfig {
   final FAnalytic _analytics;
   final FRemoteConfigs _configs;
@@ -10,10 +9,9 @@ abstract class FirebaseAppConfig {
     this._analytics,
     this._configs,
   );
-  
+
   FAnalytic get analytics => _analytics;
   FRemoteConfigs get configs => _configs;
-
 
   Future<void> initRemoteConfigDev();
 

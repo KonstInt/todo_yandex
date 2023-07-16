@@ -15,7 +15,6 @@ class RemoteToDoService {
         connectTimeout: const Duration(milliseconds: 5000),
         headers: {
           "Authorization": "Bearer ${MyConstants.keyBearer}",
-
         });
     dio = Dio(options);
     dio.interceptors.add(

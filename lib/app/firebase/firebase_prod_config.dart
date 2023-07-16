@@ -83,7 +83,7 @@ class FAnalyticProd implements FAnalytic {
   }
 }
 
-class FRemoteConfigsProd implements FRemoteConfigs{
+class FRemoteConfigsProd implements FRemoteConfigs {
   @override
   Color getRemoteConfigImportantColor() {
     Color color =
