@@ -55,6 +55,7 @@ dependencies:
   firebase_crashlytics: ^3.3.3
   firebase_analytics: ^10.4.4
   firebase_remote_config: ^4.2.4
+  freezed_annotation: ^2.4.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
