@@ -132,5 +132,5 @@ jobs:
         run: flutter build apk --flavor prod -t lib/main_prod.dart --dart-define=KEY_BEARER=classman
       - name: Upload to Firebase App Distribution
         run: firebase --token ${{secrets.FIREBASE_TOKEN}} appdistribution:distribute build/app/outputs/flutter-apk/app-prod-release.apk  \
-             --app 1:172497733694:android:7e9cc7ebe8aca94c48296f  \
-             --release-notes "Automatically update by GitHub Action after success build"
+            --app ${{secrets.FIREBASE_APP_ID}}  \
+            --release-notes "Github Automatic Update"
