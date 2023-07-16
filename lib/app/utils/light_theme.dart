@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 ThemeData lightThemeData(BuildContext context) {
-  double widthVaue = MediaQuery.of(context).size.width * 0.01;
+  //double widthVaue = MediaQuery.of(context).size.width * 0.01;
   return ThemeData(
     useMaterial3: true,
     colorScheme: const ColorScheme.light(
