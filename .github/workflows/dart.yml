@@ -45,7 +45,7 @@ jobs:
         - name: Analyze project source
           run: flutter analyze
         - name: Format check
-          run: flutter format --set-exit-if-changed.
+          run: dart format . --set-exit-if-changed
   test:
       runs-on: ubuntu-latest
       steps:
@@ -136,4 +136,4 @@ jobs:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          file: app/build/outputs/apk/release/app-release-unsigned.apk
+          file: build/app/outputs/flutter-apk/app-prod-release.apk
