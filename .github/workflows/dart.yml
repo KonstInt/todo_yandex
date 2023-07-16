@@ -6,10 +6,8 @@
 name: Dart
 
 on:
-  push:
-    branches: [ "home-task-ci" ]
   pull_request:
-    branches: [ "home-task-ci" ]
+    branches: [ "main" ]
 jobs:
   analyze:
       runs-on: ubuntu-latest

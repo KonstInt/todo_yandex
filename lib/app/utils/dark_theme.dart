@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-ThemeData darkThemeData() {
+ThemeData darkThemeData(BuildContext context) {
   return ThemeData(
       useMaterial3: true,
       colorScheme: const ColorScheme.dark(
@@ -24,43 +25,43 @@ ThemeData darkThemeData() {
       primaryColor: _MyColorsDark.kColorBlue,
       textTheme: TextTheme(
         titleLarge: GoogleFonts.roboto(
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             color: _MyColorsDark.kLabelPrimary,
             fontWeight: FontWeight.w500,
-            fontSize: 32,
-            height: 38 / 32,
+            fontSize: 32.sp,
+            height: (38 / 32).sp,
           ),
         ),
         titleMedium: GoogleFonts.roboto(
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             color: _MyColorsDark.kLabelPrimary,
             fontWeight: FontWeight.w500,
-            fontSize: 20,
-            height: 32 / 20,
+            fontSize: 20.sp,
+            height: (32 / 20).sp,
           ),
         ),
         bodyMedium: GoogleFonts.roboto(
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             color: _MyColorsDark.kLabelPrimary,
             fontWeight: FontWeight.w400,
-            fontSize: 16,
-            height: 20 / 16,
+            fontSize: 16.sp,
+            height: (20 / 16).sp,
           ),
         ),
         bodySmall: GoogleFonts.roboto(
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             color: _MyColorsDark.kLabelPrimary,
             fontWeight: FontWeight.w400,
-            fontSize: 14,
-            height: 20 / 14,
+            fontSize: 14.sp,
+            height: (20 / 14).sp,
           ),
         ),
         labelLarge: GoogleFonts.roboto(
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             color: _MyColorsDark.kLabelPrimary,
             fontWeight: FontWeight.w500,
-            fontSize: 14,
-            height: 24 / 14,
+            fontSize: 14.sp,
+            height: (24 / 14).sp,
           ),
         ),
       ),

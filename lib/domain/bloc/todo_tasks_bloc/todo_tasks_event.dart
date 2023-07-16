@@ -27,3 +27,5 @@ class TodoTasksChangeTaskEvent extends TodoTasksEvent {
   final TodoTask task;
   TodoTasksChangeTaskEvent({required this.id, required this.task});
 }
+
+class PriorityColorChangeTaskEvent extends TodoTasksEvent {}

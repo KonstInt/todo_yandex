@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'package:to_do_yandex/app/utils/constants.dart';
@@ -21,8 +22,9 @@ class DeleteLine extends StatelessWidget {
               Navigator.of(context).pop();
             },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 22),
+        padding: EdgeInsets.symmetric(horizontal: 20.0.r, vertical: 22.h),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
               MyAssets.kRubbishIcon,
@@ -31,6 +33,8 @@ class DeleteLine extends StatelessWidget {
                       ? CommonColors.kColorRed
                       : Theme.of(context).colorScheme.secondary,
                   BlendMode.srcIn),
+              height: 20.sp,
+              width: 20.sp,
             ),
             const SizedBox(
               width: 14,

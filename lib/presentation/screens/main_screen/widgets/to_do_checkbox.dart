@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:to_do_yandex/app/firebase/firebase_config.dart';
@@ -44,30 +45,37 @@ class _TodoCheckboxState extends State<TodoCheckbox> {
           children: [
             Container(
               color: widget.done ? CommonColors.kColorGreen : backgroundColor,
-              width: 15,
-              height: 15,
+              width: 15.r,
+              height: 15.r,
             ),
-            Checkbox(
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              checkColor: Theme.of(context).colorScheme.onBackground,
-              fillColor: MaterialStateProperty.all(
-                  widget.done ? Colors.green : borderColor),
-              value: widget.done,
-              onChanged: (bool? newValue) async {
-                context
-                    .read<TodoTasksBloc>()
-                    .add(TodoTasksChangeDoneEvent(id: widget.id));
-              },
+            SizedBox(
+              width: 35.r,
+              height: 35.r,
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Checkbox(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  checkColor: Theme.of(context).colorScheme.onBackground,
+                  fillColor: MaterialStateProperty.all(
+                      widget.done ? Colors.green : borderColor),
+                  value: widget.done,
+                  onChanged: (bool? newValue) async {
+                    context
+                        .read<TodoTasksBloc>()
+                        .add(TodoTasksChangeDoneEvent(id: widget.id));
+                  },
+                ),
+              ),
             ),
           ],
         ),
         if (!widget.done)
           switch (widget.priority) {
             TaskPriority.low => Padding(
-                padding: const EdgeInsets.only(right: 6),
+                padding: const EdgeInsets.only(right: 6).r,
                 child: SvgPicture.asset(MyAssets.kLowPriorityIcon)),
             TaskPriority.important => Padding(
-                padding: const EdgeInsets.only(right: 6),
+                padding: const EdgeInsets.only(right: 6).r,
                 child: SvgPicture.asset(
                   MyAssets.kHighPriorityIcon,
                   colorFilter: ColorFilter.mode(

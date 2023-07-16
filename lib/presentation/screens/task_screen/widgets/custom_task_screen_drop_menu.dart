@@ -6,8 +6,8 @@ import 'package:to_do_yandex/domain/models/todo_task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:to_do_yandex/app/utils/constants.dart';
 
-class TaskDetailsImportanceField extends StatelessWidget {
-  const TaskDetailsImportanceField({
+class TaskPriorityWidget extends StatelessWidget {
+  const TaskPriorityWidget({
     required this.selectedImportance,
     required this.onImportanceValueChanged,
     super.key,
@@ -21,12 +21,13 @@ class TaskDetailsImportanceField extends StatelessWidget {
     final text = Theme.of(context).textTheme;
 
     return PopupMenuButton<TaskPriority>(
+      position: PopupMenuPosition.over,
       initialValue: selectedImportance,
       itemBuilder: (context) => <PopupMenuEntry<TaskPriority>>[
         for (var importance in TaskPriority.values)
           PopupMenuItem<TaskPriority>(
             value: importance,
-            child: PopupImportanceItem(importance: importance),
+            child: PopupPriorityItem(priority: importance),
           ),
       ],
       onSelected: onImportanceValueChanged,
@@ -40,22 +41,22 @@ class TaskDetailsImportanceField extends StatelessWidget {
           const SizedBox(
             height: 8,
           ),
-          ImportanceText(importance: selectedImportance)
+          PriorityText(priority: selectedImportance)
         ],
       ),
     );
   }
 }
 
-class ImportanceText extends StatelessWidget {
-  const ImportanceText({required this.importance, super.key});
+class PriorityText extends StatelessWidget {
+  const PriorityText({required this.priority, super.key});
 
-  final TaskPriority? importance;
+  final TaskPriority? priority;
 
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
-    return switch (importance) {
+    return switch (priority) {
       null => Text(
           AppLocalizations.of(context)!.withoutPriority,
           style: text.bodyMedium!
@@ -94,15 +95,15 @@ class ImportanceText extends StatelessWidget {
   }
 }
 
-class PopupImportanceItem extends StatelessWidget {
-  const PopupImportanceItem({required this.importance, super.key});
+class PopupPriorityItem extends StatelessWidget {
+  const PopupPriorityItem({required this.priority, super.key});
 
-  final TaskPriority? importance;
+  final TaskPriority? priority;
 
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
-    return switch (importance) {
+    return switch (priority) {
       null => Text(
           AppLocalizations.of(context)!.withoutPriority,
           style: text.bodyMedium,

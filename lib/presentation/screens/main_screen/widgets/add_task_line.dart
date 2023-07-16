@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import '../../../../domain/models/todo_task.dart';
 
@@ -30,13 +31,13 @@ class _AddTaskLineState extends State<AddTaskLine> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15),
+      padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 30).r,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          IconButton(
-            disabledColor:
-                Theme.of(context).colorScheme.secondary.withOpacity(0.3),
-            onPressed: !iconEnabled
+          InkWell(
+            onTap: !iconEnabled
                 ? null
                 : () {
                     HapticFeedback.lightImpact();
@@ -60,13 +61,17 @@ class _AddTaskLineState extends State<AddTaskLine> {
                       currentFocus.unfocus();
                     }
                   },
-            icon: const Icon(Icons.add),
+            child: Icon(
+              Icons.add,
+              size: 20.sp,
+            ),
           ),
-          const SizedBox(
-            width: 17,
+          SizedBox(
+            width: 17.r,
           ),
           Expanded(
             child: TextField(
+              textAlignVertical: TextAlignVertical.center,
               cursorColor: Theme.of(context).primaryColor,
               style: Theme.of(context).textTheme.bodyMedium,
               onChanged: (value) {
@@ -83,6 +88,8 @@ class _AddTaskLineState extends State<AddTaskLine> {
                     .textTheme
                     .bodyMedium!
                     .copyWith(color: Theme.of(context).colorScheme.secondary),
+                isDense: true,
+                contentPadding: EdgeInsets.zero,
               ),
             ),
           ),

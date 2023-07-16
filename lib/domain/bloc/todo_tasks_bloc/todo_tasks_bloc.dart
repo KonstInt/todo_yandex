@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -31,6 +32,10 @@ class TodoTasksBloc extends Bloc<TodoTasksEvent, TodoTasksState> {
 
   TodoTasksBloc() : super(TodoTasksInitial()) {
     repository = TodoRepository();
+    FirebaseRemoteConfig.instance.onConfigUpdated.listen((event) async {
+      await FirebaseRemoteConfig.instance.activate();
+      add(PriorityColorChangeTaskEvent());
+    });
     on<TodoTasksListLoadEvent>(_onTasksListLoadEvent);
     on<TodoTasksChangeDoneEvent>(_onTasksChangeDoneEvent);
     on<TodoTasksRemoveEvent>(_onTasksRemoveEvent);
@@ -38,6 +43,14 @@ class TodoTasksBloc extends Bloc<TodoTasksEvent, TodoTasksState> {
     on<TodoTasksChangeDoneVisibilityEvent>(
         _onTodoTasksChangeDoneVisibilityEvent);
     on<TodoTasksChangeTaskEvent>(_onTodoTasksChangeTaskEvent);
+    on<PriorityColorChangeTaskEvent>(_updateColor);
+  }
+
+  FutureOr<void> _updateColor(
+      PriorityColorChangeTaskEvent event, Emitter<TodoTasksState> emit) {
+    emit(TodoTaskLoadingState());
+    emit(TodoTasksListLoadedState(
+        tasks: _resultList, doneCounter: _doneCounter));
   }
 
   FutureOr<void> _onTasksListLoadEvent(

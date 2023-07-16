@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:to_do_yandex/app/navigation/router_delegate.dart';
+import 'package:to_do_yandex/app/utils/constants.dart';
 import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'package:to_do_yandex/presentation/screens/main_screen/widgets/landscape_appbar.dart';
 import 'widgets/add_task_line.dart';
@@ -19,9 +21,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    double metric =
-        MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
-    if (metric < 1) {
+    if (!MyFunctions.isPortraitOrientation(context) ||
+        !MyFunctions.isTablet(context)) {
       return SafeArea(
         child: Scaffold(
           body: GestureDetector(
@@ -45,8 +46,8 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 8),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10.h, horizontal: 8.w),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Card(
@@ -59,7 +60,8 @@ class _MainScreenState extends State<MainScreen> {
                                   if (state is TodoTasksListLoadedState) {
                                     return ListView.builder(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
+                                              vertical: 10)
+                                          .h,
                                       shrinkWrap: true,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
@@ -96,8 +98,8 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           floatingActionButton: SizedBox(
-            height: 65,
-            width: 65,
+            height: 65.r,
+            width: 65.r,
             child: FittedBox(
               child: FloatingActionButton(
                 onPressed: () {
@@ -127,7 +129,9 @@ class _MainScreenState extends State<MainScreen> {
             child: Row(
               children: [
                 const Expanded(flex: 1, child: LandscapeAppbar()),
-                const VerticalDivider(),
+                const VerticalDivider(
+                  width: 1,
+                ),
                 Expanded(
                   flex: 2,
                   child: SizedBox(
@@ -143,8 +147,8 @@ class _MainScreenState extends State<MainScreen> {
                           scrollDirection: Axis.vertical,
                           physics: const AlwaysScrollableScrollPhysics(),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 8),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.h, horizontal: 8.w),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: Card(

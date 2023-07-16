@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'package:to_do_yandex/domain/models/todo_task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,15 +22,17 @@ class CustomTaskScreenAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 20),
+      padding: EdgeInsets.only(left: 10.r, right: 20.r, top: 20.h),
       child: Row(
         children: [
           IconButton(
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(Icons.close)),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.close),
+            iconSize: 25.sp,
+          ),
           const Spacer(),
           InkWell(
             onTap: () {

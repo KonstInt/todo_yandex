@@ -86,8 +86,9 @@ class FAnalyticProd implements FAnalytic {
 class FRemoteConfigsProd implements FRemoteConfigs {
   @override
   Color getRemoteConfigImportantColor() {
-    Color color =
-        HexColor(FirebaseRemoteConfig.instance.getString('important_color'));
+    Color color = HexColor(
+      FirebaseRemoteConfig.instance.getString('important_color'),
+    );
     return color;
   }
 }

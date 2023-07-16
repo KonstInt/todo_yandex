@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'package:to_do_yandex/presentation/screens/task_screen/widgets/custom_appbar.dart';
@@ -71,7 +72,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 ),
                 Container(
                   margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
+                      EdgeInsets.symmetric(horizontal: 16.r, vertical: 26.h),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   constraints: const BoxConstraints(minHeight: 144),
                   decoration: BoxDecoration(
@@ -103,14 +104,11 @@ class _TaskScreenState extends State<TaskScreen> {
                   ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.only(
-                        right: 16.0, left: 16.0, top: 6, bottom: 10),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: TaskDetailsImportanceField(
-                          selectedImportance: dropdownValue,
-                          onImportanceValueChanged: callbackDDValue),
-                    )),
+                    padding: EdgeInsets.only(
+                        right: 20.0.r, left: 20.0.r, top: 6.h, bottom: 10.h),
+                    child: TaskPriorityWidget(
+                        selectedImportance: dropdownValue,
+                        onImportanceValueChanged: callbackDDValue)),
                 const Divider(
                   thickness: 1,
                   indent: 16,
@@ -118,7 +116,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      EdgeInsets.symmetric(horizontal: 20.r, vertical: 6.h),
                   child: Row(
                     children: [
                       Column(
