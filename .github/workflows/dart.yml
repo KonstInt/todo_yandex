@@ -11,95 +11,88 @@ on:
   pull_request:
     branches: [ "home-task-ci" ]
 jobs:
-  # analyze:
-  #     runs-on: ubuntu-latest
+  analyze:
+      runs-on: ubuntu-latest
 
-  #     steps:
-  #       - uses: actions/checkout@v3
-  #       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-  #       - uses: subosito/flutter-action@v2
-  #         with:
-  #           channel: 'stable'
-  #           cache: true
-  #       - name: Install dependencies
-  #         run: flutter pub get
+      steps:
+        - uses: actions/checkout@v3
+        - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+        - uses: subosito/flutter-action@v2
+          with:
+            channel: 'stable'
+            cache: true
+        - name: Install dependencies
+          run: flutter pub get
 
-  #       - name: Build runner build
-  #         run: flutter pub run build_runner build --delete-conflicting-outputs
-  #       - name: Firebase config
-  #         run: curl -sL https://firebase.tools | bash
-  #       - run: dart pub global activate flutterfire_cli
-  #       - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
-  #       - run: flutterfire configure --token ${{secrets.FIREBASE_TOKEN}} 
-  #             --project="todo-yandex-flutter" 
-  #             --platforms="android" 
-  #             --android-package-name="com.example.to_do_yandex" 
-  #             --yes
+        - name: Build runner build
+          run: flutter pub run build_runner build --delete-conflicting-outputs
+        - name: Firebase config
+          run: curl -sL https://firebase.tools | bash
+        - run: dart pub global activate flutterfire_cli
+        - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
+        - run: flutterfire configure --token ${{secrets.FIREBASE_TOKEN}} 
+              --project="todo-yandex-flutter" 
+              --platforms="android" 
+              --android-package-name="com.example.to_do_yandex" 
+              --yes
+        - name: Analyze project source
+          run: flutter analyze
+        - name: Format check
+          run: dart format . --set-exit-if-changed
+  test:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+        - uses: subosito/flutter-action@v2
+          with:
+            channel: 'stable'
+            cache: true
+        - name: Install dependencies
+          run: flutter pub get
 
-  #       # - name: Deploy to Firebase
-  #       #   uses: w9jds/firebase-action@master
-  #       #   with:
-  #       #     args: deploy --only hosting
-  #       #   env:
-  #       #     GCP_SA_KEY: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-  #       - name: Analyze project source
-  #         run: flutter analyze
-  #       - name: Format check
-  #         run: dart format . --set-exit-if-changed
-  # test:
-  #     runs-on: ubuntu-latest
-  #     steps:
-  #       - uses: actions/checkout@v3
-  #       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-  #       - uses: subosito/flutter-action@v2
-  #         with:
-  #           channel: 'stable'
-  #           cache: true
-  #       - name: Install dependencies
-  #         run: flutter pub get
+        - name: Build runner build
+          run: flutter pub run build_runner build --delete-conflicting-outputs
+        - name: Firebase config
+          run: curl -sL https://firebase.tools | bash
+        - run: dart pub global activate flutterfire_cli
+        - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
+        - run: flutterfire configure --token ${{secrets.FIREBASE_TOKEN}} 
+              --project="todo-yandex-flutter" 
+              --platforms="android" 
+              --android-package-name="com.example.to_do_yandex" 
+              --yes
+        - name: Run tests
+          run: flutter test
+  build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-java@v2
+          with: 
+            distribution: 'zulu'
+            java-version: '11'
+        - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+        - uses: subosito/flutter-action@v2
+          with:
+            channel: 'stable'
+            cache: true
+        - name: Install dependencies
+          run: flutter pub get
 
-  #       - name: Build runner build
-  #         run: flutter pub run build_runner build --delete-conflicting-outputs
-  #       - name: Firebase config
-  #         run: curl -sL https://firebase.tools | bash
-  #       - run: dart pub global activate flutterfire_cli
-  #       - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
-  #       - run: flutterfire configure --token ${{secrets.FIREBASE_TOKEN}} 
-  #             --project="todo-yandex-flutter" 
-  #             --platforms="android" 
-  #             --android-package-name="com.example.to_do_yandex" 
-  #             --yes
-  #       - name: Run tests
-  #         run: flutter test
-  # build:
-  #     runs-on: ubuntu-latest
-  #     steps:
-  #       - uses: actions/checkout@v3
-  #       - uses: actions/setup-java@v2
-  #         with: 
-  #           distribution: 'zulu'
-  #           java-version: '11'
-  #       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-  #       - uses: subosito/flutter-action@v2
-  #         with:
-  #           channel: 'stable'
-  #           cache: true
-  #       - name: Install dependencies
-  #         run: flutter pub get
-
-  #       - name: Build runner build
-  #         run: flutter pub run build_runner build --delete-conflicting-outputs
-  #       - name: Firebase config
-  #         run: curl -sL https://firebase.tools | bash
-  #       - run: dart pub global activate flutterfire_cli
-  #       - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
-  #       - run: flutterfire configure --token ${{secrets.FIREBASE_TOKEN}} 
-  #             --project="todo-yandex-flutter" 
-  #             --platforms="android" 
-  #             --android-package-name="com.example.to_do_yandex" 
-  #             --yes
-  #       - name: Flutter build
-  #         run: flutter build apk --flavor prod -t lib/main_prod.dart --dart-define=KEY_BEARER=classman
+        - name: Build runner build
+          run: flutter pub run build_runner build --delete-conflicting-outputs
+        - name: Firebase config
+          run: curl -sL https://firebase.tools | bash
+        - run: dart pub global activate flutterfire_cli
+        - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
+        - run: flutterfire configure --token ${{secrets.FIREBASE_TOKEN}} 
+              --project="todo-yandex-flutter" 
+              --platforms="android" 
+              --android-package-name="com.example.to_do_yandex.dev" 
+              --yes
+        - name: Flutter build
+          run: flutter build apk --flavor dev -t lib/main_dev.dart --dart-define=KEY_BEARER=${{secrets.KEY_BEARER}} 
   distribute:
     runs-on: ubuntu-latest
     steps:
@@ -126,10 +119,10 @@ jobs:
       - run: flutterfire configure --token ${{secrets.FIREBASE_TOKEN}} 
             --project="todo-yandex-flutter" 
             --platforms="android" 
-            --android-package-name="com.example.to_do_yandex" 
+            --android-package-name="com.example.to_do_yandex.dev" 
             --yes
       - name: build release 
-        run: flutter build apk --flavor prod -t lib/main_prod.dart --dart-define=KEY_BEARER=classman
+        run: flutter build apk --flavor dev -t lib/main_dev.dart --dart-define=KEY_BEARER=${{secrets.KEY_BEARER}} 
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
@@ -137,7 +130,3 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-prod-release.apk
-      # - name: Upload to Firebase App Distribution
-      #   run: firebase --token ${{secrets.FIREBASE_TOKEN}} appdistribution:distribute build/app/outputs/flutter-apk/app-prod-release.apk  \
-      #       --app ${{secrets.FIREBASE_APP_ID}}  \
-      #       --release-notes "Github Automatic Update"
