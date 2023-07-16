@@ -11,22 +11,24 @@ on:
   pull_request:
     branches: [ "home-task-ci" ]
 jobs:
+
   build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
-
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      # - uses: dart-lang/setup-dart@v1
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
       - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
       - name: Install dependencies
         run: flutter pub get
+
       - name: Build runner build
         run: flutter pub run build_runner build --delete-conflicting-outputs
+        with:
+          cache: true
       - name: Firebase config
         run: curl -sL https://firebase.tools | bash
       - run: dart pub global activate flutterfire_cli
@@ -43,22 +45,11 @@ jobs:
       #     args: deploy --only hosting
       #   env:
       #     GCP_SA_KEY: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
-
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
-        run: dart analyze
-
-      # Your project will need to have tests in test/ and a dependency on
-      # package:test for this step to succeed. Note that Flutter projects will
-      # want to change this to 'flutter test'.
-      - name: Run get
-        run: flutter pub get 
-             
-      - name: Run analyze
         run: flutter analyze
+
+      - name: Format check
+        run: flutte r format --set-exit-if-changed.
+         
       - name: Run tests
         run: flutter test
