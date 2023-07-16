@@ -109,17 +109,10 @@ ThemeData darkThemeData() {
 
 class _MyColorsDark {
   static const Color kSeparatorColor = Color(0x33FFFFFF);
-  static const Color kOverlayColor = Color(0x52000000);
   static const Color kLabelPrimary = Color(0xFFFFFFFF);
-  static const Color kLabelSecondary = Color(0x99FFFFFF);
   static const Color kLabelTertiary = Color(0x66FFFFFF);
-  static const Color kLabelDisable = Color(0x26FFFFFF);
-  static const Color kColorRed = Color(0xFFFF453A);
-  static const Color kColorGreen = Color(0xFF32D74B);
   static const Color kColorBlue = Color(0xFF0A84FF);
   static const Color kColorGray = Color(0xFF8E8E93);
-  static const Color kColorGrayLight = Color(0xFF48484A);
-  static const Color kColorWhite = Color(0xFFFFFFFF);
   static const Color kColorBackPrimary = Color(0xFF161618);
   static const Color kColorBackSecondary = Color(0xFF252528);
   static const Color kColorBackElevated = Color(0xFF3C3C3F);

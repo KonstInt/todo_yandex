@@ -29,12 +29,18 @@ jobs:
         run: flutter pub get
       - name: Build runner build
         run: flutter pub run build_runner build --delete-conflicting-outputs
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only hosting
-        env:
-          GCP_SA_KEY: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+      - name: Firebase config
+        run: curl -sL https://firebase.tools | bash
+      - run: dart pub global activate flutterfire_cli
+      - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
+      - run: flutterfire configure --token env.FIREBASE_TOKEN --project="todo-yandex-flutter" --platforms="android, ios, web" --yes
+
+      # - name: Deploy to Firebase
+      #   uses: w9jds/firebase-action@master
+      #   with:
+      #     args: deploy --only hosting
+      #   env:
+      #     GCP_SA_KEY: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
       # - name: Verify formatting

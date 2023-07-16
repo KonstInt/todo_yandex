@@ -110,17 +110,11 @@ ThemeData lightThemeData(BuildContext context) {
 
 class _MyColorsLight {
   static const Color kSeparatorColor = Color(0x33000000);
-  static const Color kOverlayColor = Color(0x0F000000);
   static const Color kLabelPrimary = Color(0xFF000000);
-  static const Color kLabelSecondary = Color(0x99000000);
   static const Color kLabelTertiary = Color(0x4D000000);
-  static const Color kLabelDisable = Color(0x26000000);
-  static const Color kColorRed = Color(0xFFFF3B30);
-  static const Color kColorGreen = Color(0xFF34C759);
   static const Color kColorBlue = Color(0xFF007AFF);
   static const Color kColorGray = Color(0xFF8E8E93);
   static const Color kColorGrayLight = Color(0xFFD1D1D6);
-  static const Color kColorWhite = Color(0xFFFFFFFF);
   static const Color kColorBackPrimary = Color(0xFFF7F6F2);
   static const Color kColorBackSecondary = Color(0xFFFFFFFF);
   static const Color kColorBackElevated = Color(0xFFFFFFFF);

@@ -17,7 +17,7 @@
         "type": "dart",
         "program": "lib/main_dev.dart",
         //TODO: Input your key
-        "args": ["--flavor", "dev", "--target", "lib/main_dev.dart", "--dart-define=KEY_BEARER=____"]
+        "args": ["--flavor", "dev", "--target", "lib/main_dev.dart", "--dart-define=KEY_BEARER=classman"]
       },
       {
         "name": "Run prod",
@@ -25,7 +25,7 @@
         "type": "dart",
         "program": "lib/main_prod.dart",
         //TODO: Input your key
-        "args": ["--flavor", "prod", "--target", "lib/main_prod.dart", "--dart-define=KEY_BEARER=____"]
+        "args": ["--flavor", "prod", "--target", "lib/main_prod.dart", "--dart-define=KEY_BEARER=classman"]
       },  
       {
         "name": "Run test",
