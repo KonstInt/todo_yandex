@@ -10,8 +10,6 @@ on:
     branches: [ "home-task-ci" ]
   pull_request:
     branches: [ "home-task-ci" ]
-env: 
-    FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,7 +31,7 @@ jobs:
         run: curl -sL https://firebase.tools | bash
       - run: dart pub global activate flutterfire_cli
       - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
-      - run: flutterfire configure --token env.FIREBASE_TOKEN --project="todo-yandex-flutter" --platforms="android, ios, web" --yes
+      - run: flutterfire configure --token ${{secrets.FIREBASE_TOKEN}} --project="todo-yandex-flutter" --platforms="android, ios, web" --yes
 
       # - name: Deploy to Firebase
       #   uses: w9jds/firebase-action@master
