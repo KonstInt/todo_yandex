@@ -2,7 +2,7 @@
     "helloWorld": "Hello World!",
     "myTasks": "My tasks",
     "done":"Done - ",
-    "save":"Save", 
+    "save":"SAVE", 
     "delete":"Delete",
     "lowPriority":"Low",
     "highPriority":"High",

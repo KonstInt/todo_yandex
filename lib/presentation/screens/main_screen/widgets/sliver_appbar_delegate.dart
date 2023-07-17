@@ -2,9 +2,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../../bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
-import '../../../../utils/constants.dart';
+import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
+import '../../../../app/utils/constants.dart';
 
 //Кастомный AppBar с плавным передвижением текста и иконки как в дизайне
 class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
@@ -48,12 +49,12 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
               //Виджет текста с количеством выполненных задач
               Positioned(
                 bottom: animationVal * 18,
-                left: 60,
+                left: 60.r,
                 child: Opacity(
                   opacity: animationVal,
                   child: Text(
                     AppLocalizations.of(context)!.done +
-                        (state is TodoTaskLoadedState
+                        (state is TodoTasksListLoadedState
                             ? state.doneCounter.toString()
                             : " "),
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -63,20 +64,20 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
               ),
               //Виджет заголовка
               Positioned(
-                bottom: 16.0 + animationVal * 24,
-                left: (animationVal * 44 + 16).toDouble(),
+                bottom: 16.0 + animationVal * 24.r,
+                left: (animationVal * 44 + 16).toDouble().r,
                 child: Text(
                   AppLocalizations.of(context)!.myTasks,
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
-                      .copyWith(fontSize: animationVal * 12 + 20),
+                      .copyWith(fontSize: (animationVal * 12 + 20).sp),
                 ),
               ),
               //Кнопка глаз
               Positioned(
-                bottom: 5 + animationVal * 2,
-                right: 25,
+                bottom: 5.r + animationVal * 2.r,
+                right: 25.r,
                 child: IconButton(
                   focusColor: Colors.transparent,
                   hoverColor: Colors.transparent,
@@ -91,6 +92,8 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                     context.read<TodoTasksBloc>().isComplitedHide
                         ? MyAssets.kEyeIcon
                         : MyAssets.kEyeCrossIcon,
+                    height: 20.r,
+                    width: 20.r,
                   ),
                 ),
               ),

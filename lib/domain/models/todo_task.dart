@@ -1,29 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class TodoTask {
-  final String id;
-  final String text;
-  final TaskPriority importance;
+part 'todo_task.freezed.dart';
 
-  DateTime? deadline;
-  bool done;
-
-  Color? color;
-
-  DateTime createdAt;
-  DateTime changedAt;
-  String lastUpdatedBy;
-
-  TodoTask(
-      {required this.id,
-      required this.text,
-      required this.importance,
-      required this.done,
-      this.deadline,
-      this.color,
-      required this.createdAt,
-      required this.changedAt,
-      required this.lastUpdatedBy});
+@freezed
+class TodoTask with _$TodoTask {
+  factory TodoTask(
+      {required String id,
+      required String text,
+      required TaskPriority importance,
+      required bool done,
+      required bool isSynchronized,
+      DateTime? deadline,
+      Color? color,
+      required DateTime createdAt,
+      required DateTime changedAt,
+      required String lastUpdatedBy}) = _TodoTask;
 }
 
 enum TaskPriority { basic, important, low }

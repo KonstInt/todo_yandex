@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:to_do_yandex/domain/bloc/todo_tasks_bloc/todo_tasks_bloc.dart';
 import 'package:to_do_yandex/presentation/screens/task_screen/widgets/custom_appbar.dart';
 import 'package:to_do_yandex/presentation/screens/task_screen/widgets/custom_task_screen_drop_menu.dart';
 import 'package:to_do_yandex/presentation/screens/task_screen/widgets/delete_line.dart';
@@ -7,29 +10,28 @@ import '../../../domain/models/todo_task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskScreen extends StatefulWidget {
-  const TaskScreen({super.key, this.task});
-  final TodoTask? task;
+  const TaskScreen({super.key, this.taskId});
+  final String? taskId;
   @override
   State<TaskScreen> createState() => _TaskScreenState();
 }
-
-
 
 class _TaskScreenState extends State<TaskScreen> {
   late TextEditingController _controller;
   bool dateOn = false;
   TaskPriority? dropdownValue;
+  TodoTask? task;
   DateTime dateTime = DateTime.now();
   @override
   void initState() {
     super.initState();
-
     _controller = TextEditingController();
-    if (widget.task != null) {
-      dateOn = widget.task!.deadline != null ? true : false;
-      _controller.text = widget.task!.text;
-      dateTime = widget.task!.deadline ?? DateTime.now();
-      dropdownValue = widget.task!.importance;
+    task = context.read<TodoTasksBloc>().getTaskById(widget.taskId);
+    if (task != null) {
+      dateOn = task!.deadline != null ? true : false;
+      _controller.text = task!.text;
+      dateTime = task!.deadline ?? DateTime.now();
+      dropdownValue = task!.importance;
     }
   }
 
@@ -39,9 +41,12 @@ class _TaskScreenState extends State<TaskScreen> {
     super.dispose();
   }
 
-  void callbackDDValue(TaskPriority value){setState(() {
-                        dropdownValue = value;
-                      });}
+  void callbackDDValue(TaskPriority value) {
+    setState(() {
+      dropdownValue = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,9 +63,16 @@ class _TaskScreenState extends State<TaskScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomTaskScreenAppBar(controller: _controller, dateOn: dateOn, dateTime: dateTime, dropdownValue: dropdownValue, task: widget.task,),
+                CustomTaskScreenAppBar(
+                  controller: _controller,
+                  dateOn: dateOn,
+                  dateTime: dateTime,
+                  dropdownValue: dropdownValue,
+                  task: task,
+                ),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
+                  margin:
+                      EdgeInsets.symmetric(horizontal: 16.r, vertical: 26.h),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   constraints: const BoxConstraints(minHeight: 144),
                   decoration: BoxDecoration(
@@ -87,20 +99,16 @@ class _TaskScreenState extends State<TaskScreen> {
                           .textTheme
                           .bodyMedium!
                           .copyWith(
-                              color: Theme.of(context).colorScheme.shadow),
+                              color: Theme.of(context).colorScheme.secondary),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 6),
-                  child: Text(AppLocalizations.of(context)!.priority),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      right: 16.0, left: 16.0, top: 6, bottom: 10),
-                  child: 
-                  CustomTaskScreenDropMenu(dropdownValue: dropdownValue, callbackValue: callbackDDValue)
-                ),
+                    padding: EdgeInsets.only(
+                        right: 20.0.r, left: 20.0.r, top: 6.h, bottom: 10.h),
+                    child: TaskPriorityWidget(
+                        selectedImportance: dropdownValue,
+                        onImportanceValueChanged: callbackDDValue)),
                 const Divider(
                   thickness: 1,
                   indent: 16,
@@ -108,7 +116,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      EdgeInsets.symmetric(horizontal: 20.r, vertical: 6.h),
                   child: Row(
                     children: [
                       Column(
@@ -119,7 +127,12 @@ class _TaskScreenState extends State<TaskScreen> {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           if (dateOn)
-                            Text(DateFormat('dd.MM.yyyy').format(dateTime),
+                            Text(
+                                DateFormat(
+                                        'dd MMMM yyyy',
+                                        AppLocalizations.of(context)
+                                            ?.localeName)
+                                    .format(dateTime),
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall!
@@ -129,7 +142,6 @@ class _TaskScreenState extends State<TaskScreen> {
                       ),
                       const Spacer(),
                       Switch(
-                        activeColor: Theme.of(context).primaryColor,
                         value: dateOn,
                         onChanged: (bool value) async {
                           if (!value) {
@@ -164,7 +176,9 @@ class _TaskScreenState extends State<TaskScreen> {
                 const Divider(
                   thickness: 1,
                 ),
-                DeleteLine(task: widget.task,)
+                DeleteLine(
+                  task: task,
+                )
               ],
             ),
           ),
